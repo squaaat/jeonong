@@ -41,5 +41,5 @@ func Handler(ctx context.Context) (Response, error) {
 }
 
 func main() {
-	Start(Handler)
+	lambda.Start(Handler)
 }
