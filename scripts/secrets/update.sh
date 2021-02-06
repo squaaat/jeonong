@@ -1,10 +1,8 @@
 #!/bin/zsh
 
-DD=/squaaat/squaaat-api/alpha/env
-
 region="ap-northeast-2"
 project="jeonong"
-app="api"
+app="jeonong-api"
 environment="alpha"
 inDir="./"
 
@@ -13,13 +11,13 @@ usage() {
 Description: Update AWS System Store Manager Parameter
 Usage: $(basename $0)
   -r region (default: ap-northeast-2)
-  -a app (default: api)
+  -a app (default: jeonong-api)
   -e environment (default: alpha)
   -i inDir (default: ./)
   [-h help]
 
 Example:
-  ./scripts/secrets/update.sh -r ap-northeast-2 -a api -e alpha
+  ./scripts/secrets/update.sh -r ap-northeast-2 -a jeonong-api -e alpha
 "
 exit 1;
 }
@@ -38,14 +36,11 @@ done
 [ -z "${app}" ] && >&2 echo "Error: -n app required" && usage
 [ -z "${environment}" ] && >&2 echo "Error: -m environment required" && usage
 
-echo "/${project}/${app}/${environment}/env"
-
 YML="$(cat ${inDir}./application.${environment}.yml)"
 echo "${YML}"
 
 echo "- Output -------------------------------"
-
-echo "${inDir}./application.${environment}.yml)"
+echo "region:${region} | path: /${project}/${app}/${environment}/application.yml"
 aws ssm put-parameter \
   --region ${region} \
   --name "/${project}/${app}/${environment}/application.yml" \

@@ -1,10 +1,8 @@
 #!/bin/zsh
 
-DD=/squaaat/squaaat-api/alpha/env
-
 region="ap-northeast-2"
 project="jeonong"
-app="api"
+app="jeonong-api"
 environment="alpha"
 outDir="./"
 
@@ -13,13 +11,13 @@ usage() {
 Description: Printout AWS System Store Manager Parameter
 Usage: $(basename $0)
   -r region (default: ap-northeast-2)
-  -a app (default: api)
+  -a app (default: jeonong-api)
   -e environment (default: alpha)
   -o outDir (default: ./)
   [-h help]
 
 Example:
-  ./scripts/secrets/printout.sh -r ap-northeast-2 -a api -e alpha
+  ./scripts/secrets/printout.sh -r ap-northeast-2 -a jeonong-api -e alpha
 "
 exit 1;
 }

@@ -1,7 +1,12 @@
 frameworkVersion: '2'
 
+
+plugins:
+  - serverless-domain-manager
+
+
 service: jeonong-api
-org: jeoning
+org: jeonong
 
 provider:
   name: aws
@@ -10,43 +15,71 @@ provider:
   region: ${env:AWS_REGION}
   deploymentBucket: squaaat-lambda # jeonong-lambda 버킷이 잘 안만들어져 임시로 사용.
   lambdaHashingVersion: 20201221
-
+  apiGateway:
+    shouldStartNameWithService: true
+  logs:
+    http: true
   environment:
     J_ENV: ${env:J_ENV}
     J_CICD: ${env:J_CICD}
 
-# you can add statements to the Lambda function's IAM Role here
-#  iamRoleStatements:
-#    - Effect: "Allow"
-#      Action:
-#        - "s3:ListBucket"
-#      Resource: { "Fn::Join" : ["", ["arn:aws:s3:::", { "Ref" : "ServerlessDeploymentBucket" } ] ]  }
-#    - Effect: "Allow"
-#      Action:
-#        - "s3:PutObject"
-#      Resource:
-#        Fn::Join:
-#          - ""
-#          - - "arn:aws:s3:::"
-#            - "Ref" : "ServerlessDeploymentBucket"
-#            - "/*"
+  iamRoleStatements:
+    - Effect: "Allow" # VPC 할 때 쓸라고..
+      Action:
+        - "logs:CreateLogGroup"
+        - "logs:CreateLogStream"
+        - "logs:PutLogEvents"
+        - "ec2:CreateNetworkInterface"
+        - "ec2:DescribeNetworkInterfaces"
+        - "ec2:DeleteNetworkInterface"
+        - "ec2:AssignPrivateIpAddresses"
+        - "ec2:UnassignPrivateIpAddresses"
+      Resource: "*"
+
+    - Effect: "Allow" # APM도구로 x-ray 할 때 쓸라고..
+      Action:
+        - "xray:PutTraceSegments"
+        - "xray:PutTelemetryRecords"
+        - "xray:GetSamplingRules"
+        - "xray:GetSamplingTargets"
+        - "xray:GetSamplingStatisticSummaries"
+      Resource: "*"
+
+    - Effect: "Allow" # S3에 swagger가져올겸.. 겸사겸사
+      Action:
+        - "s3:*"
+      Resource: "*"
+
+    - Effect: "Allow" # SSM으로 환경변수 불러오는거 관리할라고
+      Action:
+        - "kms:Decrypt"
+        - "kms:Encrypt"
+        - "kms:DescribeKey"
+        - "ssm:GetParametersByPath"
+        - "ssm:GetParameters"
+        - "ssm:GetParameter"
+      Resource: "*"
 
 package:
   exclude:
-    - ./**
+    - serverless.yml
+    - .idea
+    - .serverless
+    - .gitignore
   include:
-    - ./bin/**
+    - ./**
 
 functions:
-  hello:
-    handler: bin/hello
+  api:
+    handler: bin/lambda
     events:
-      - httpApi:
-          path: /hello
-          method: get
-  world:
-    handler: bin/world
-    events:
-      - httpApi:
-          path: /world
-          method: get
+      - http:
+          path: /{proxy+}
+          method: ANY
+
+custom:
+  customDomain:
+    domainName: 'jeonong.alpha.squaaat.com'
+    basePath: ''
+    stage: ${self:provider.stage}
+    createRoute53Record: true
