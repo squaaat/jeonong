@@ -1,58 +1,21 @@
 # api
 
+### TODO
 
-### Getting started
+1. lambda에서 로그를 어떻게 해야 잘 남길 수 있을까?
+2. swagger를 어떻게 잘 디스플레잉 할 수 있을까?
+3. bucket 교체하기
+4. [web] admin webpage 만들기 + admin api 만들기
+5. 챗봇 빌더 만들기
 
-``` go
-go mod download
-go run main.go start
-```
+### developments
+- admin용 API를 최대한 먼저 만든다.
+- chatbot용 API를 최대한 먼저 만든다.
 
-### deploy
+### Commands
 
-``` bash
-make deploy
-```
+Read `Makefile`
 
-### swagger
+#### DB SCHEMA
 
-- create swagger yml
-
-``` bash
-swagger generate spec -o ./swagger.yml --scan-models
-aws s3 cp ./swagger.yml s3://squaaat-lambda/serverless/jeonong-api/alpha/swagger.yml --acl public-read
-```
-
-- validate swagger yml
-
-``` bash
-swagger validate ./swagger.yml
-```
-
-### gorm
-
-- DB 초기화
-``` bash
-go run main.go gorm create
-```
-
-- DB 삭제
-``` bash
-go run main.go gorm clean
-```
-
-- DB 초기화 & 삭제
-``` bash
-go run main.go gorm re-create
-```
-
-- Migration 코드 생성
-``` bash
-go run main.go gorm migrate create -v (default: yyyymmddHHMM)
-```
-
-- Migration 코드 실행
-``` bash
-go run main.go gorm migrate sync
-``` 
-
+![SCHEMA](https://i.imgur.com/PidOm2w.png)
