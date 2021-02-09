@@ -9,6 +9,7 @@ const IndexPage = () => (
         <a>About</a>
       </Link>
     </p>
+    <p>{process.env.APPLICATION_YML}</p>
   </Layout>
 )
 

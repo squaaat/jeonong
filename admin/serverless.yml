@@ -1,0 +1,22 @@
+# serverless.yml
+
+# 참고1: https://nextjs.org/blog/next-8#serverless-nextjs
+
+# Lambda Edge를 쓰는데 lambda edge는 runtime 환경변수를 쓰지 못함 그러므로, build time시점의 환경변수 밖에 이용하지 못함.
+# serverless.yml을 이용해서 ssm으로 값을 불러서 환경변수 넣는것은 불가능함.
+
+env: ${env.J_ENV}
+cicd: ${env.J_CICD}
+
+jeonong-admin:
+  component: "./node_modules/@sls-next/serverless-component"
+  inputs:
+    name: jeonong-admin
+    bucketName: jeonong-admin
+    bucketRegion: us-east-1
+    cloudfront:
+	    distributionId: E2E5ORCNNCDGZY
+    build:
+      env:
+        J_ENV: ${env}
+        J_CICD: ${cicd}
