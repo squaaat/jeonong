@@ -1,93 +1,30 @@
-import { Fragment } from 'react'
-import Link from 'next/link'
+import { FC } from 'react'
+import DefaultLayout from 'components/DefaultLayout'
 
-import styled, { createGlobalStyle } from 'styled-components'
+type Props = {
+  data?: any;
+}
 
-import sg from 'utils/styleguide'
 
-const IndexPage = () => (
-  <Fragment>
-    <GlobalLayout />
-    <Layout>
-      <SideNav>
-        <SideNavHeader>
-          조용진(Admin)
-        </SideNavHeader>
-        <SideNavContent>
-          <ul>
-            <li>
-              <Link href="/products">상품관리</Link>
-            </li>
-          </ul>
-        </SideNavContent>
-      </SideNav>
-      <Body>
-        <Header>
-          프로젝트 전농
-        </Header>
-        <Content>
-          Content
-        </Content>
+const IndexPage:FC<Props> = ({ data }) => {
+  console.log(data)
+  return (
+    <DefaultLayout
+      title="굳세어라 김치김치"
+    >
+      김치김치
+    </DefaultLayout>
+  )
+}
 
-      </Body>
+// This gets called on every request
+export async function getServerSideProps() {
+  // Fetch data from external API
+  const res = await fetch(`https://www.naver.com/data`)
+  const data = await res.json()
 
-    </Layout>
-  </Fragment>
-)
-
-const Header = styled.div`
-  width: 100%;
-  padding: 0 0.5rem;
-
-  height: ${sg.default.headerHeightSize};
-  line-height: ${sg.default.headerHeightSize};
-
-  background-color: ${sg.default.pointColor};
-  color: ${sg.default.textColorR};
-`
-
-const Content = styled.div`
-  width: 100%;
-`
-const SideNav = styled.nav`
-  background-color: ${sg.default.pointWeekColor};
-
-  width: ${sg.default.sideNavWidthSize};
-`
-const SideNavHeader = styled.div`
-  padding: 0 0.5rem;
-  height: ${sg.default.headerHeightSize};
-
-  line-height: ${sg.default.headerHeightSize};
-  font-size: ${sg.default.textSizeStrong};
-
-  background-color: ${sg.default.pointStrongColor};
-  color: ${sg.default.textColorR};
-`
-
-const SideNavContent = styled.div`
-  line-height: ${sg.default.headerHeightSize};
-  font-size: ${sg.default.textSize};
-`
-
-const Body = styled.div`
-  width: 100%;
-`
-
-const Layout = styled.div`
-  display: flex;
-  flex-direction: row;
-
-  min-width: 100vw;
-  min-height: 100vh;
-`
-
-const GlobalLayout = createGlobalStyle`
-  body {
-    background-color: ${sg.default.backgroundColor};
-    color: ${sg.default.textColor};
-    margin: 0;
-  }
-`
+  // Pass data to the page via props
+  return { props: { data } }
+}
 
 export default IndexPage
