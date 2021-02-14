@@ -55,8 +55,6 @@ func (m *DefaultModel) BeforeCreate(_ *gorm.DB) error {
 	if m.ID == "" {
 		m.ID = uuid.NewString()
 	}
-	m.CreatedBy = m.ID
-	m.UpdatedBy = m.ID
 	m.CreatedAt = time.Now()
 	m.UpdatedAt = time.Now()
 	return nil

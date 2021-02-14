@@ -1,9 +1,11 @@
 package store
 
 import (
+	"github.com/rs/zerolog/log"
+
 	"github.com/squaaat/jeonong/api/internal/app"
 	"github.com/squaaat/jeonong/api/internal/er"
-	"github.com/squaaat/jeonong/api/internal/model"
+	keywordStore "github.com/squaaat/jeonong/api/internal/service/keyword/store"
 )
 
 type Service struct {
@@ -26,18 +28,45 @@ func (s *Service) MustLoadDataAtLocal() error {
 	}
 
 	for _, cat := range data.Depth1 {
-		//
-		result := s.App.ServiceDB.DB.Create(&model.Keyword{
-			Name: cat.Name,
-			Code: cat.Code,
-		})
-		if result.Error != nil {
-			err = er.WrapOp(result.Error, op)
-			return result.Error
+		k, err := keywordStore.MustGetKeyword(s.App.ServiceDB.DB, cat.Name, cat.Code)
+		if err != nil {
+			return er.WrapOp(err, op)
 		}
-		if result.RowsAffected == 0 {
-			return er.New("Nothing inserted at rows", er.KindInternalServerError, op)
+		c, err := AddCategoryIfNotExist(s.App.ServiceDB.DB, k, nil)
+		if err != nil {
+			return er.WrapOp(err, op)
 		}
+		log.Debug().Interface("category", c).Send()
+	}
+	for _, cat := range data.Depth2 {
+		k, err := keywordStore.MustGetKeyword(s.App.ServiceDB.DB, cat.Name, cat.Code)
+		if err != nil {
+			return er.WrapOp(err, op)
+		}
+		pk, err := keywordStore.GetKeywordByCode(s.App.ServiceDB.DB, cat.Code)
+		if err != nil {
+			return er.WrapOp(err, op)
+		}
+		c, err := AddCategoryIfNotExist(s.App.ServiceDB.DB, k, pk)
+		if err != nil {
+			return er.WrapOp(err, op)
+		}
+		log.Debug().Interface("category", c).Send()
+	}
+	for _, cat := range data.Depth3 {
+		k, err := keywordStore.MustGetKeyword(s.App.ServiceDB.DB, cat.Name, cat.Code)
+		if err != nil {
+			return er.WrapOp(err, op)
+		}
+		pk, err := keywordStore.GetKeywordByCode(s.App.ServiceDB.DB, cat.Code)
+		if err != nil {
+			return er.WrapOp(err, op)
+		}
+		c, err := AddCategoryIfNotExist(s.App.ServiceDB.DB, k, pk)
+		if err != nil {
+			return er.WrapOp(err, op)
+		}
+		log.Debug().Interface("category", c).Send()
 	}
 
 	return nil

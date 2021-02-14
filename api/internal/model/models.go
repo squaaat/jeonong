@@ -37,8 +37,8 @@ type Product struct {
 type Keyword struct {
 	DefaultModel
 
-	Code string `gorm:"type:VARCHAR(100);not null;uniqueIndex"`
 	Name string `gorm:"type:VARCHAR(100);not null;uniqueIndex"`
+	Code string `gorm:"type:VARCHAR(100);not null"`
 }
 
 type Category struct {
@@ -47,7 +47,7 @@ type Category struct {
 	KeywordID string  `gorm:"type:CHAR(36);not null"`
 	Keyword   Keyword `gorm:"foreignKey:KeywordID"`
 
-	ParentKeywordID string  `gorm:"type:CHAR(36);not null"`
+	ParentKeywordID string  `gorm:"type:CHAR(36)"`
 	ParentKeyword   Keyword `gorm:"foreignKey:ParentKeywordID"`
 }
 

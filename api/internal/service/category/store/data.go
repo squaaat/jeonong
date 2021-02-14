@@ -4,10 +4,13 @@ import (
 	"fmt"
 	"io/ioutil"
 
-	"github.com/ghodss/yaml"
+	"github.com/pkg/errors"
+	"gopkg.in/yaml.v3"
+	"gorm.io/gorm"
 
 	_const "github.com/squaaat/jeonong/api/internal/const"
 	"github.com/squaaat/jeonong/api/internal/er"
+	"github.com/squaaat/jeonong/api/internal/model"
 )
 
 type DataCategories struct {
@@ -39,4 +42,46 @@ func MustLoadDataAtLocal() (*DataCategories, error) {
 	}
 
 	return data, nil
+}
+
+
+func AddCategoryIfNotExist(tx *gorm.DB, keyword, parentKeyword *model.Keyword) (*model.Category, error) {
+	if keyword == nil {
+		return nil, errors.New("'keyword' is primary")
+	}
+
+	parentKeywordID := keyword.ID
+	parentKeywordName := keyword.Name
+	if parentKeyword != nil {
+		parentKeywordID = parentKeyword.ID
+		parentKeywordName = parentKeyword.Name
+	}
+
+	c := &model.Category{
+		KeywordID: keyword.ID,
+		ParentKeywordID: parentKeywordID,
+		DefaultModel: model.DefaultModel{
+			Status: model.StatusIdle,
+		},
+	}
+
+	subTx := tx.Take(c, "keyword_id = ? AND parent_keyword_id = ?", c.KeywordID, c.ParentKeywordID).Scan(c)
+	if subTx.Error != nil {
+		if !errors.Is(subTx.Error, gorm.ErrRecordNotFound) {
+			return nil, subTx.Error
+		}
+	}
+	if subTx.RowsAffected == 1 {
+		return c, nil
+	}
+
+	subTx = tx.Create(c)
+	if subTx.Error != nil {
+		return nil, subTx.Error
+	}
+	if subTx.RowsAffected != 1 {
+		return nil, fmt.Errorf("failed create categroy [child: %s/parent: %s]", keyword.Name, parentKeywordName)
+	}
+
+	return c, nil
 }

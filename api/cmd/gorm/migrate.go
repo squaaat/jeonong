@@ -7,10 +7,12 @@ import (
 	"github.com/rs/zerolog/log"
 	"github.com/spf13/cobra"
 
+
 	"github.com/squaaat/jeonong/api/internal/app"
 	"github.com/squaaat/jeonong/api/internal/config"
-	"github.com/squaaat/jeonong/api/migrations"
 	categoryStore "github.com/squaaat/jeonong/api/internal/service/category/store"
+	manufactureStore "github.com/squaaat/jeonong/api/internal/service/manufacture/store"
+	"github.com/squaaat/jeonong/api/migrations"
 )
 
 func newGormMigrate() *cobra.Command {
@@ -52,6 +54,12 @@ func newGormMigrateSync() *cobra.Command {
 		if err != nil {
 			fmt.Println(err.Error())
 		}
+		manStore := manufactureStore.New(a)
+		err = manStore.MustLoadDataAtLocal()
+		if err != nil {
+			fmt.Println(err.Error())
+		}
+
 	}
 
 	return c
