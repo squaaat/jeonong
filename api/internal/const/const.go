@@ -1,5 +1,10 @@
 package _const
 
+import (
+	"runtime"
+	"strings"
+)
+
 const (
 	Project = "jeonong"
 	App     = "jeonong-api"
@@ -10,3 +15,14 @@ const (
 	EnvAlpha = "alpha"
 	EnvProd  = "prod"
 )
+
+var (
+	ProjectRootPath string
+)
+
+func init() {
+	_, constFilePath, _, _ := runtime.Caller(0)
+	splits := strings.Split(constFilePath, "/")
+	absolutePathSplits := splits[:(len(splits) - 3)]
+	ProjectRootPath = strings.Join(absolutePathSplits, "/")
+}

@@ -1,6 +1,7 @@
 package model
 
 import (
+	"database/sql/driver"
 	"time"
 
 	"gorm.io/gorm"
@@ -9,13 +10,13 @@ import (
 
 func Load() []interface{} {
 	return []interface{}{
-		&Articles{},
-		&ArticlesDiscounts{},
-		&Sales{},
-		&Products{},
-		&Categories{},
-		&CategoryHierarchy{},
-		&Manufactures{},
+		&Article{},
+		&ArticlesDiscount{},
+		&Sale{},
+		&Keyword{},
+		&Product{},
+		&Category{},
+		&Manufacture{},
 		&Markets{},
 	}
 }
@@ -23,12 +24,32 @@ func Load() []interface{} {
 type DefaultModel struct {
 	ID string `gorm:"primaryKey;type:CHAR(36);not null"`
 
+	Status    EnumStatus     `gorm:"type:ENUM('WAIT','IDLE','INVALID','DELETED');default:'WAIT'"`
 	CreatedBy string         `gorm:"type:CHAR(36);not null"`
 	CreatedAt time.Time      `gorm:"type:timestamp;not null"`
 	UpdatedBy string         `gorm:"type:CHAR(36);not null"`
 	UpdatedAt time.Time      `gorm:"type:timestamp;not null"`
 	DeletedAt gorm.DeletedAt `gorm:"type:timestamp;index"`
 }
+
+type EnumStatus string
+
+const (
+	StatusWait EnumStatus = "WAIT"
+	StatusIdle EnumStatus = "IDLE"
+	StatusInvalid EnumStatus = "INVALID"
+	StatusRemoved EnumStatus = "DELETED"
+)
+
+func (e *EnumStatus) Scan(value interface{}) error {
+	*e = EnumStatus(value.([]byte))
+	return nil
+}
+
+func (e EnumStatus) Value() (driver.Value, error) {
+	return string(e), nil
+}
+
 
 func (m *DefaultModel) BeforeCreate(_ *gorm.DB) error {
 	if m.ID == "" {

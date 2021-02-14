@@ -1,6 +1,7 @@
 package gorm
 
 import (
+	"fmt"
 	"time"
 
 	"github.com/rs/zerolog/log"
@@ -9,6 +10,7 @@ import (
 	"github.com/squaaat/jeonong/api/internal/app"
 	"github.com/squaaat/jeonong/api/internal/config"
 	"github.com/squaaat/jeonong/api/migrations"
+	categoryStore "github.com/squaaat/jeonong/api/internal/service/category/store"
 )
 
 func newGormMigrate() *cobra.Command {
@@ -45,6 +47,11 @@ func newGormMigrateSync() *cobra.Command {
 		a := app.New(cfg)
 		m := migrations.New(a)
 		m.Sync()
+		catStore := categoryStore.New(a)
+		err = catStore.MustLoadDataAtLocal()
+		if err != nil {
+			fmt.Println(err.Error())
+		}
 	}
 
 	return c

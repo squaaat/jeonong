@@ -1,0 +1,140 @@
+depth1:
+  -
+    code: fashion-sundries
+    sort: 1
+    name: 패션의류/잡화
+  -
+    code: beauty
+    sort: 2
+    name: 출산/유아동
+  -
+    code: child-birth
+    sort: 3
+    name: 패션의류/잡화
+  -
+    code: food
+    sort: 4
+    name: 식품
+  -
+    code: kitchen
+    sort: 5
+    name: 주방용품
+  -
+    code: life
+    sort: 6
+    name: 생활용품
+  -
+    code: home_decoration
+    sort: 7
+    name: 홈인테리어
+  -
+    code: appliances-digital
+    sort: 8
+    name: 가전/디지털
+  -
+    code: sports
+    sort: 9
+    name: 스포츠/레져
+  -
+    code: car
+    sort: 10
+    name: 자동차용품
+  -
+    code: book
+    sort: 11
+    name: 도서/음반/DVD
+  -
+    code: hobby
+    sort: 12
+    name: 완구/취
+  -
+    code: office
+    sort: 13
+    name: 문구/오피스
+  -
+    code: pet
+    sort: 14
+    name: 반려동물용품
+  -
+    code: health
+    sort: 15
+    name: 헬스/건강식품
+
+depth2:
+  # fashion-sundries
+  -
+    parentCode: fashion-sundries
+    code: womanclothe
+    name: 여성패션
+    sort: 1
+  -
+    parentCode: fashion-sundries
+    code: manclothe
+    name: 남성패션
+    sort: 2
+  -
+    parentCode: fashion-sundries
+    code: childfashion
+    name: 유아동패션
+    sort: 3
+
+depth3:
+  # womanclothe
+  -
+    parentCode: womanclothe
+    code: clothes
+    name: 의류
+    sort: 1
+  -
+    parentCode: womanclothe
+    code: underwear-pajama
+    name: 속옷/잠옷
+    sort: 2
+  -
+    parentCode: womanclothe
+    code: shoes
+    name: 신발
+    sort: 3
+  -
+    parentCode: womanclothe
+    code: bag-sundries
+    name: 가방/잡화
+    sort: 4
+  # manclothe
+  -
+    parentCode: manclothe
+    code: clothes
+    name: 의류
+    sort: 1
+  -
+    parentCode: manclothe
+    code: underwear-pajama
+    name: 속옷/잠옷
+    sort: 2
+  -
+    parentCode: manclothe
+    code: shoes
+    name: 신발
+    sort: 3
+  -
+    parentCode: manclothe
+    code: bag-sundries
+    name: 가방/잡화
+    sort: 4
+  # childfashion
+  -
+    parentCode: childfashion
+    code: baby
+    name: 베이비
+    sort: 1
+  -
+    parentCode: childfashion
+    code: girl
+    name: 여아
+    sort: 2
+  -
+    parentName: childfashion
+    code: boy
+    name: 남아
+    sort: 3
+

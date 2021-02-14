@@ -63,17 +63,14 @@ const DefaultLayout: FC<Props> = ({ title, children, session }) => {
             fontWeight: sg.default.textWeightStrong,
             fontSize: sg.default.textSizeTitle,
 
+            boxShadow: `0 1px 4px rgb(0 21 41 / 8%)`,
             backgroundColor: sg.default.pointColor,
             color: sg.default.textColorR,
           }}
         >
           {title}
         </Header>
-        <Content style={{ margin: '0 1rem' }}>
-          <Breadcrumb style={{ margin: '1rem 0' }}>
-            {GenerateBreadCrumb("/products/helloworld")}
-            {/* {GenerateBreadCrumb(router.pathname)} */}
-          </Breadcrumb>
+        <Content>
           {children}
         </Content>
       </Layout>
@@ -81,17 +78,19 @@ const DefaultLayout: FC<Props> = ({ title, children, session }) => {
   )
 }
 
-const GenerateBreadCrumb = (pathname: string): ReactNode[] => {
+export const GenerateBreadCrumb = (pathname: string): ReactNode[] => {
   const previous:string[] = []
   const items = pathname.split("/").map((v, i) => {
     previous.push(v)
     return (
-      <Breadcrumb.Item
-        href={[...previous].join('/')}
-        key={`crumb-${i+1}`}
-      >
-        {v}
-      </Breadcrumb.Item>
+      <Breadcrumb style={{ margin: '1rem 0' }}>
+        <Breadcrumb.Item
+          href={[...previous].join('/')}
+          key={`crumb-${i+1}`}
+        >
+          {v}
+        </Breadcrumb.Item>
+      </Breadcrumb>
     )
   })
   return items
