@@ -4,8 +4,6 @@ import DefaultLayout from 'components/DefaultLayout'
 import { Session, MockSession } from 'models/Session'
 import Card from 'components/Card'
 
-import sg from 'utils/sample-data'
-
 type PageProps = {
   session: Session;
 }
