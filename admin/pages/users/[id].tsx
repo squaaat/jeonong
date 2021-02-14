@@ -2,7 +2,7 @@ import { GetStaticProps, GetStaticPaths } from 'next'
 
 import { User } from '../../interfaces'
 import { sampleUserData } from '../../utils/sample-data'
-import Layout from '../../components/DefaultLayout'
+import Layout from '../../components/DefaultLayoutold'
 import ListDetail from '../../components/ListDetail'
 
 type Props = {

@@ -1,10 +1,11 @@
-import { FC } from 'react'
+import { FC, ReactNode } from 'react'
 import styled from 'styled-components'
 
+import sg from 'utils/styleguide'
 
 type CardProps = {
-  header?: FC
-  children: FC
+  header?: any
+  children: ReactNode
 }
 
 const Card: FC<CardProps> = ({ header, children }) => {
@@ -45,18 +46,22 @@ const CardHeader = styled.div`
 
   display: flex;
   flex-direction: row;
-  color: #333;
-  font-size: 1.25rem;
+
+  color: ${sg.default.textStrongColor};
+  font-size: ${sg.default.textSizeTitle};
   height: ${defaultHeaderSize};
   line-height: ${defaultHeaderSize};
-  border-bottom: 1px solid #acacac;
+  border-bottom: ${sg.default.componentBorderSolid} solid ${sg.default.componentBorderColor};
 `
 
 const CardLayout = styled.div`
-  color: #333;
-  border: 1px solid #acacac;
+  color: ${sg.default.textColor};
+  font-size: ${sg.default.textSize};
+
+  border: ${sg.default.componentBorderSolid} solid ${sg.default.componentBorderColor};
+  background-color: ${sg.default.componentBackgroundColor};
   border-radius: 6px;
-  box-shadow: 3px 3px 3px #ccc;
+  box-shadow: ${sg.default.componentBoxShadowSize} ${sg.default.componentBoxShadowSize} ${sg.default.componentBoxShadowSize} ${sg.default.componentBoxShadowColor};
 `
 
 export default Card

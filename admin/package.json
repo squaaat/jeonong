@@ -9,7 +9,9 @@
     "type-check": "tsc"
   },
   "dependencies": {
+    "@ant-design/icons": "^4.5.0",
     "@sls-next/serverless-component": "^1.18.0",
+    "antd": "^4.12.3",
     "aws-sdk": "^2.840.0",
     "babel-plugin-styled-components": "^1.12.0",
     "global": "^4.4.0",

@@ -1,30 +1,47 @@
 import { FC } from 'react'
 import DefaultLayout from 'components/DefaultLayout'
 
-type Props = {
-  data?: any;
+import { Session, MockSession } from 'models/Session'
+import Card from 'components/Card'
+
+import sg from 'utils/sample-data'
+
+type PageProps = {
+  session: Session;
 }
 
+type ServerProps = {
+  props: PageProps;
+}
 
-const IndexPage:FC<Props> = ({ data }) => {
-  console.log(data)
+const IndexPage:FC<PageProps> = ({ session }) => {
+  console.log(session)
   return (
     <DefaultLayout
+      session={session}
       title="굳세어라 김치김치"
     >
-      김치김치
+      <Card
+        header="상품등록"
+      >
+        <p>
+          김치김치
+        </p>
+      </Card>
     </DefaultLayout>
   )
 }
 
-// This gets called on every request
-export async function getServerSideProps() {
-  // Fetch data from external API
-  const res = await fetch(`https://www.naver.com/data`)
-  const data = await res.json()
 
-  // Pass data to the page via props
-  return { props: { data } }
+// This function gets called at build time
+export async function getStaticProps() {
+  
+  const data: ServerProps = {
+    props: {
+      session: MockSession,
+    }
+  }
+  return data
 }
 
 export default IndexPage
