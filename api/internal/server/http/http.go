@@ -5,8 +5,10 @@ import (
 
 	swagger "github.com/arsmn/fiber-swagger/v2"
 	"github.com/gofiber/fiber/v2"
+	"github.com/gofiber/fiber/v2/middleware/cors"
 
 	"github.com/squaaat/jeonong/api/internal/app"
+	catSrv "github.com/squaaat/jeonong/api/internal/service/category"
 )
 
 // JEONONG-api application http api server that jeonong-api
@@ -32,6 +34,7 @@ import (
 func New(a *app.Application) *fiber.App {
 	f := fiber.New()
 
+	f.Use(cors.New())
 	f.Use(func(ctx *fiber.Ctx) error {
 		fmt.Println(ctx.Path())
 		fmt.Println(string(ctx.Body()))
@@ -42,5 +45,9 @@ func New(a *app.Application) *fiber.App {
 		//f.Get("/swagger/*", swagger.New(swagger.Config{URL: fmt.Sprintf("https://squaaat-lambda.s3.ap-northeast-2.amazonaws.com/serverless/%s/%s/swagger.yml", a.Config.App.AppName, a.Config.App.Env)}))
 		f.Get("/swagger/*", swagger.Handler)
 	}
+
+	categoryService := catSrv.New(a)
+	f.Put("/v1/categories", categoryService.FiberHandlerPutCategory)
+
 	return f
 }

@@ -6,7 +6,10 @@ import (
 	"runtime"
 	"strings"
 
+	"github.com/gofiber/fiber/v2"
+	jsoniter "github.com/json-iterator/go"
 	"github.com/pkg/errors"
+
 )
 
 type Kind int
@@ -18,8 +21,37 @@ const (
 	KindForbidden
 	KindIgnorable
 	KindFailJSONMarshaling
-	KindFailDSLSerialize
 )
+
+var (
+	KindAndHTTPStatusMap = map[Kind]int{
+		KindUndefined: fiber.StatusInternalServerError,
+		KindBadRequest: fiber.StatusBadRequest,
+		KindInternalServerError: fiber.StatusInternalServerError,
+		KindFailJSONMarshaling: fiber.StatusInternalServerError,
+		KindForbidden: fiber.StatusForbidden,
+	}
+)
+
+
+func (k Kind) String() string {
+	switch k {
+	case KindUndefined:
+		return "KindUndefined"
+	case KindBadRequest:
+		return "KindBadRequest"
+	case KindInternalServerError:
+		return "KindInternalServerError"
+	case KindForbidden:
+		return "KindForbidden"
+	case KindIgnorable:
+		return "KindIgnorable"
+	case KindFailJSONMarshaling:
+		return "KindFailJSONMarshaling"
+	default:
+		return "KindUndefined"
+	}
+}
 
 type Error struct {
 	Ops  []string
@@ -94,4 +126,25 @@ func CallerOp() string {
 	caller := runtime.FuncForPC(pc).Name()
 	splits := strings.Split(caller, "/")
 	return strings.Join(splits[3:], ".")
+}
+
+func ToJSON(err error) string {
+	e := new(err)
+	jsonObj := map[string]string{
+		"error": e.Error(),
+		"kind": e.Kind.String(),
+	}
+	s, err := jsoniter.MarshalToString(&jsonObj)
+	if err != nil {
+		return `{"error": "er.(e *Error).ToJSON marshalling failed", "kind": "KindFailJSONMarshaling"}`
+	}
+	return s
+}
+
+func ToHTTPStatus(err error) int {
+	e := new(err)
+	if i, ok := KindAndHTTPStatusMap[e.Kind]; ok {
+		return i
+	}
+	return fiber.StatusInternalServerError
 }

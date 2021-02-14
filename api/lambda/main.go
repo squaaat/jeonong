@@ -1,19 +1,22 @@
 package main
 
 import (
-	swagger "github.com/arsmn/fiber-swagger/v2"
+	"os"
+
 	"github.com/aws/aws-lambda-go/lambda"
 	adapter "github.com/awslabs/aws-lambda-go-api-proxy/fiber"
-	"github.com/gofiber/fiber/v2"
+
+	"github.com/squaaat/jeonong/api/internal/app"
+	"github.com/squaaat/jeonong/api/internal/config"
+	serverhttp "github.com/squaaat/jeonong/api/internal/server/http"
 )
 
 func main() {
+	cfg := config.MustInit(os.Getenv("J_ENV"), false)
+	app := app.New(cfg)
+	http := serverhttp.New(app)
 
-	f := fiber.New()
-
-	f.Get("/swagger/*", swagger.Handler)
-
-	lambdaApp := adapter.New(f)
+	lambdaApp := adapter.New(http)
 
 	lambda.Start(lambdaApp.Proxy)
 }

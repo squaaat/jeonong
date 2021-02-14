@@ -65,7 +65,11 @@ func AddCategoryIfNotExist(tx *gorm.DB, keyword, parentKeyword *model.Keyword) (
 		},
 	}
 
-	subTx := tx.Take(c, "keyword_id = ? AND parent_keyword_id = ?", c.KeywordID, c.ParentKeywordID).Scan(c)
+	subTx := tx.
+		Preload("Keyword").
+		Preload("ParentKeyword").
+		Take(c, "keyword_id = ? AND parent_keyword_id = ?", c.KeywordID, c.ParentKeywordID).
+		Scan(c)
 	if subTx.Error != nil {
 		if !errors.Is(subTx.Error, gorm.ErrRecordNotFound) {
 			return nil, subTx.Error
