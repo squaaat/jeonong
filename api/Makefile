@@ -5,16 +5,7 @@ run:
 	go mod download
 	go run main.go http start
 
-swag:
-	# create swagger.yml
-	swagger generate spec -o ./swagger.yml --scan-models
-    aws s3 cp ./swagger.yml s3://squaaat-lambda/serverless/jeonong-api/alpha/swagger.yml --acl public-read
-
-swag-val:
-	# validate swagger.yml
-	swagger validate ./swagger.yml
-
-deploy: swag swag-val
+deploy:
 	# deploy server
 	rm -rf ./bin
 	env GOARCH=amd64 GOOS=linux go build -ldflags="-s -w" -o bin/lambda lambda/main.go

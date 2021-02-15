@@ -128,11 +128,15 @@ func CallerOp() string {
 	return strings.Join(splits[3:], ".")
 }
 
+type ErrorJSON struct {
+	Error string `json:"error"`
+	Kind string `json:"kind"`
+}
 func ToJSON(err error) string {
 	e := new(err)
-	jsonObj := map[string]string{
-		"error": e.Error(),
-		"kind": e.Kind.String(),
+	jsonObj := ErrorJSON{
+		Error: e.Error(),
+		Kind: e.Kind.String(),
 	}
 	s, err := jsoniter.MarshalToString(&jsonObj)
 	if err != nil {
