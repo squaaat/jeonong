@@ -31,10 +31,6 @@
 ./scripts/secrets/update.sh -r ap-northeast-2 -a jeonong-api -e alpha -i ./
 ```
 
-# phase1
-
-- 중성동(중랑구, 성동구, 동대문구)의 세 구의 마트정보를 모아서 보여주는 웹 어플리케이션 서비스
-
 # 초기멤버
 
 - 조용진, 고영범
