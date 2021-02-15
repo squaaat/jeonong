@@ -1,6 +1,8 @@
+# getting start to test
 # 1. go run main.go http start
+# 2. run each http call you want
 
-### put categories
+### put category
 PUT http://localhost:4000/api/categories
 Content-Type: application/json
 
@@ -11,4 +13,17 @@ Content-Type: application/json
 ### get categories
 GET http://localhost:4000/api/categories
 Content-Type: application/json
+
+### put manufacture
+PUT http://localhost:4000/api/manufactures
+Content-Type: application/json
+
+{
+  "Manufacture": "test1"
+}
+
+### get manufactures
+GET http://localhost:4000/api/manufactures
+Content-Type: application/json
+
 

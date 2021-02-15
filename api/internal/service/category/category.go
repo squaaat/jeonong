@@ -92,7 +92,6 @@ func (s *Service) GetCategories() (*Out, error) {
 			return nil, er.WrapOp(tx.Error, op)
 		}
 	}
-	fmt.Println(tx.RowsAffected)
 	rows, err := tx.Rows()
 	defer rows.Close()
 	if err != nil {
@@ -101,9 +100,7 @@ func (s *Service) GetCategories() (*Out, error) {
 
 	for rows.Next() {
 		c := new(model.Category)
-
 		err = tx.ScanRows(rows, &c)
-		//err = rows.Scan(&c)
 		if err != nil {
 			return nil, er.WrapOp(err, op)
 		}

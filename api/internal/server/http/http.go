@@ -8,6 +8,7 @@ import (
 
 	"github.com/squaaat/jeonong/api/internal/app"
 	catSrv "github.com/squaaat/jeonong/api/internal/service/category"
+	manSrv "github.com/squaaat/jeonong/api/internal/service/manufacture"
 )
 
 func New(a *app.Application) *fiber.App {
@@ -23,5 +24,10 @@ func New(a *app.Application) *fiber.App {
 	categoryService := catSrv.New(a)
 	f.Put("/api/categories", categoryService.FiberHandlerPutCategory)
 	f.Get("/api/categories", categoryService.FiberHandlerGetCategories)
+
+	manufactureService := manSrv.New(a)
+	f.Put("/api/manufactures", manufactureService.FiberHandlerPutManufacture)
+	f.Get("/api/manufactures", manufactureService.FiberHandlerGetManufactures)
+
 	return f
 }
