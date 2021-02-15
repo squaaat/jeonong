@@ -1,6 +1,9 @@
 package category
 
 import (
+	"fmt"
+
+	"github.com/pkg/errors"
 	"gorm.io/gorm"
 
 	"github.com/squaaat/jeonong/api/internal/app"
@@ -11,23 +14,23 @@ import (
 )
 
 type Service struct {
-	App *app.Application
+	App           *app.Application
 	CategoryStore *categoryStore.Service
 }
 
 func New(a *app.Application) *Service {
 	return &Service{
-		App: a,
+		App:           a,
 		CategoryStore: categoryStore.New(a),
 	}
 }
 
 type In struct {
-	Categories []string `json:"categories"`
+	Categories []string
 }
 
 type Out struct {
-	Categories []*model.Category `json:"categories"`
+	Categories []*model.Category
 }
 
 func (s *Service) PutCategory(in []string) (*Out, error) {
@@ -35,7 +38,7 @@ func (s *Service) PutCategory(in []string) (*Out, error) {
 	var keywords = make([]*model.Keyword, len(in))
 	var categories = make([]*model.Category, len(in))
 
-	err := s.App.ServiceDB.DB.Transaction(func (tx *gorm.DB) error {
+	err := s.App.ServiceDB.DB.Transaction(func(tx *gorm.DB) error {
 		for i, keyword := range in {
 			k, err := keywordStore.MustGetKeyword(tx, keyword, "")
 			if err != nil {
@@ -45,7 +48,7 @@ func (s *Service) PutCategory(in []string) (*Out, error) {
 		}
 
 		for i, _ := range keywords {
-			if i == (len(keywords)-1) {
+			if i == (len(keywords) - 1) {
 				break
 			}
 			if i == 0 {
@@ -71,4 +74,43 @@ func (s *Service) PutCategory(in []string) (*Out, error) {
 	return &Out{
 		Categories: categories,
 	}, nil
+}
+
+func (s *Service) GetCategories() (*Out, error) {
+	op := er.CallerOp()
+
+	var categories []*model.Category
+	table := &model.Category{}
+	s.App.ServiceDB.DB.Name()
+	tx := s.App.ServiceDB.DB.
+		Model(table).
+		Joins("Keyword").
+		Joins("ParentKeyword").
+		Where(fmt.Sprintf("%s.status = 'IDLE'", table.TableName()))
+	if tx.Error != nil {
+		if !errors.Is(tx.Error, gorm.ErrRecordNotFound) {
+			return nil, er.WrapOp(tx.Error, op)
+		}
+	}
+	fmt.Println(tx.RowsAffected)
+	rows, err := tx.Rows()
+	defer rows.Close()
+	if err != nil {
+		return nil, er.WrapOp(err, op)
+	}
+
+	for rows.Next() {
+		c := new(model.Category)
+
+		err = tx.ScanRows(rows, &c)
+		//err = rows.Scan(&c)
+		if err != nil {
+			return nil, er.WrapOp(err, op)
+		}
+		categories = append(categories, c)
+	}
+	return &Out{
+		Categories: categories,
+	}, nil
+
 }

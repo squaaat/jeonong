@@ -4,8 +4,8 @@ import (
 	"database/sql/driver"
 	"time"
 
-	"gorm.io/gorm"
 	"github.com/google/uuid"
+	"gorm.io/gorm"
 )
 
 func Load() []interface{} {
@@ -17,7 +17,7 @@ func Load() []interface{} {
 		&Product{},
 		&Category{},
 		&Manufacture{},
-		&Markets{},
+		&Market{},
 	}
 }
 
@@ -35,8 +35,8 @@ type DefaultModel struct {
 type EnumStatus string
 
 const (
-	StatusWait EnumStatus = "WAIT"
-	StatusIdle EnumStatus = "IDLE"
+	StatusWait    EnumStatus = "WAIT"
+	StatusIdle    EnumStatus = "IDLE"
 	StatusInvalid EnumStatus = "INVALID"
 	StatusRemoved EnumStatus = "DELETED"
 )
@@ -49,7 +49,6 @@ func (e *EnumStatus) Scan(value interface{}) error {
 func (e EnumStatus) Value() (driver.Value, error) {
 	return string(e), nil
 }
-
 
 func (m *DefaultModel) BeforeCreate(_ *gorm.DB) error {
 	if m.ID == "" {
@@ -67,7 +66,7 @@ func (m *DefaultModel) BeforeUpdate(_ *gorm.DB) error {
 
 func (m *DefaultModel) BeforeDelete(_ *gorm.DB) error {
 	m.DeletedAt = gorm.DeletedAt{
-		Time: time.Now(),
+		Time:  time.Now(),
 		Valid: true,
 	}
 	return nil

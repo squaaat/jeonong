@@ -9,7 +9,6 @@ import (
 	"github.com/gofiber/fiber/v2"
 	jsoniter "github.com/json-iterator/go"
 	"github.com/pkg/errors"
-
 )
 
 type Kind int
@@ -25,14 +24,13 @@ const (
 
 var (
 	KindAndHTTPStatusMap = map[Kind]int{
-		KindUndefined: fiber.StatusInternalServerError,
-		KindBadRequest: fiber.StatusBadRequest,
+		KindUndefined:           fiber.StatusInternalServerError,
+		KindBadRequest:          fiber.StatusBadRequest,
 		KindInternalServerError: fiber.StatusInternalServerError,
-		KindFailJSONMarshaling: fiber.StatusInternalServerError,
-		KindForbidden: fiber.StatusForbidden,
+		KindFailJSONMarshaling:  fiber.StatusInternalServerError,
+		KindForbidden:           fiber.StatusForbidden,
 	}
 )
-
 
 func (k Kind) String() string {
 	switch k {
@@ -130,13 +128,14 @@ func CallerOp() string {
 
 type ErrorJSON struct {
 	Error string `json:"error"`
-	Kind string `json:"kind"`
+	Kind  string `json:"kind"`
 }
+
 func ToJSON(err error) string {
 	e := new(err)
 	jsonObj := ErrorJSON{
 		Error: e.Error(),
-		Kind: e.Kind.String(),
+		Kind:  e.Kind.String(),
 	}
 	s, err := jsoniter.MarshalToString(&jsonObj)
 	if err != nil {

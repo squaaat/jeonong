@@ -23,7 +23,6 @@ func GetKeywordByCode(tx *gorm.DB, code string) (*model.Keyword, error) {
 	return &r, nil
 }
 
-
 func MustGetKeyword(tx *gorm.DB, name, code string) (*model.Keyword, error) {
 	var r model.Keyword
 	subTx := tx.Take(&r, "name = ?", name).Scan(&r)

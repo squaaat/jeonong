@@ -18,8 +18,8 @@ type DataManufactures struct {
 }
 
 type Manufacture struct {
-	Code string `yml:"code"`
-	Name string `yml:"name"`
+	Code                      string `yml:"code"`
+	Name                      string `yml:"name"`
 	CompanyRegistrationNumber string `yml:"companyRegistrationNumber"`
 }
 
@@ -41,14 +41,13 @@ func MustLoadDataAtLocal() (*DataManufactures, error) {
 	return data, nil
 }
 
-
 func AddManufactureIfNotExist(tx *gorm.DB, keyword *model.Keyword, companyNumber string) (*model.Manufacture, error) {
 	if keyword == nil {
 		return nil, errors.New("'keyword' is primary")
 	}
 
 	man := &model.Manufacture{
-		KeywordID: keyword.ID,
+		KeywordID:                 keyword.ID,
 		CompanyRegistrationNumber: companyNumber,
 		DefaultModel: model.DefaultModel{
 			Status: model.StatusIdle,

@@ -44,7 +44,6 @@ func MustLoadDataAtLocal() (*DataCategories, error) {
 	return data, nil
 }
 
-
 func AddCategoryIfNotExist(tx *gorm.DB, keyword, parentKeyword *model.Keyword) (*model.Category, error) {
 	if keyword == nil {
 		return nil, errors.New("'keyword' is primary")
@@ -58,7 +57,7 @@ func AddCategoryIfNotExist(tx *gorm.DB, keyword, parentKeyword *model.Keyword) (
 	}
 
 	c := &model.Category{
-		KeywordID: keyword.ID,
+		KeywordID:       keyword.ID,
 		ParentKeywordID: parentKeywordID,
 		DefaultModel: model.DefaultModel{
 			Status: model.StatusIdle,

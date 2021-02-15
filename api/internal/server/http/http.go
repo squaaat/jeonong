@@ -22,6 +22,6 @@ func New(a *app.Application) *fiber.App {
 
 	categoryService := catSrv.New(a)
 	f.Put("/api/categories", categoryService.FiberHandlerPutCategory)
-
+	f.Get("/api/categories", categoryService.FiberHandlerGetCategories)
 	return f
 }
