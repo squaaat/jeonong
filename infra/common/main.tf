@@ -36,13 +36,13 @@ module "rds" {
 
   meta   = local.meta
   vpc_id = module.vpc.vpc_id
-  sg_ids = [module.vpc.sg_basic_id]
+  sg_ids = [module.vpc.sg_basic_id, module.vpc.sg_members_id]
   subnet_ids = [
     module.vpc.subnet_public_a_id,
     module.vpc.subnet_public_b_id,
   ]
 
-  db_password = var.db_password
+  db_password = "must_change_password_at_aws_webconsole"
   db_meta = {
     az                  = data.aws_availability_zone.a.name,
     engine              = "mysql"

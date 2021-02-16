@@ -4,7 +4,7 @@
 testData='
 {
   "resource": "/",
-  "path": "/swagger/doc.json",
+  "path": "/health",
   "httpMethod": "GET"
 }
 '

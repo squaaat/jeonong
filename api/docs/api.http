@@ -27,3 +27,7 @@ GET http://localhost:4000/api/manufactures
 Content-Type: application/json
 
 
+### get manufactures
+GET http://localhost:4000/health
+
+

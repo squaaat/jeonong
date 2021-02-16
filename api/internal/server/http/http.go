@@ -22,6 +22,9 @@ func New(a *app.Application) *fiber.App {
 	})
 
 	categoryService := catSrv.New(a)
+	f.Get("/health", func(ctx *fiber.Ctx) error {
+		return ctx.Status(fiber.StatusOK).SendString("ok")
+	})
 	f.Put("/api/categories", categoryService.FiberHandlerPutCategory)
 	f.Get("/api/categories", categoryService.FiberHandlerGetCategories)
 

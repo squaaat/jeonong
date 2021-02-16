@@ -1,7 +1,3 @@
-variable "db_password" {
-  type = string
-}
-
 output "vpc" {
   value = module.vpc
 }

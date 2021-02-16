@@ -1,6 +1,7 @@
 variable "meta" {
   type = object({
-    team = string
+    team    = string
+    service = string
   })
 }
 

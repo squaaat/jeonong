@@ -7,6 +7,7 @@ resource "aws_vpc" "nearsfeed" {
   instance_tenancy     = "default"
   tags = {
     Team = var.meta.team,
+    Name = var.meta.service,
   }
 }
 

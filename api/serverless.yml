@@ -11,7 +11,7 @@ provider:
   runtime: go1.x
   stage: ${env:J_ENV}
   region: ${env:AWS_REGION}
-  deploymentBucket: squaaat-lambda # nearsfeed-lambda 버킷이 잘 안만들어져 임시로 사용.
+  deploymentBucket: nearsfeed-lambda
   lambdaHashingVersion: 20201221
   apiGateway:
     shouldStartNameWithService: true
@@ -21,51 +21,55 @@ provider:
     J_ENV: ${env:J_ENV}
     J_CICD: ${env:J_CICD}
 
-  iamRoleStatements:
-    - Effect: "Allow" # VPC 할 때 쓸라고..
-      Action:
-        - "logs:CreateLogGroup"
-        - "logs:CreateLogStream"
-        - "logs:PutLogEvents"
-        - "ec2:CreateNetworkInterface"
-        - "ec2:DescribeNetworkInterfaces"
-        - "ec2:DeleteNetworkInterface"
-        - "ec2:AssignPrivateIpAddresses"
-        - "ec2:UnassignPrivateIpAddresses"
-      Resource: "*"
+  iam:
+    role:
+      statements:
+        - Effect: "Allow" # VPC 할 때 쓸라고..
+          Action:
+            - "logs:CreateLogGroup"
+            - "logs:CreateLogStream"
+            - "logs:PutLogEvents"
+            - "ec2:CreateNetworkInterface"
+            - "ec2:DescribeNetworkInterfaces"
+            - "ec2:DeleteNetworkInterface"
+            - "ec2:AssignPrivateIpAddresses"
+            - "ec2:UnassignPrivateIpAddresses"
+          Resource: "*"
 
-    - Effect: "Allow" # APM도구로 x-ray 할 때 쓸라고..
-      Action:
-        - "xray:PutTraceSegments"
-        - "xray:PutTelemetryRecords"
-        - "xray:GetSamplingRules"
-        - "xray:GetSamplingTargets"
-        - "xray:GetSamplingStatisticSummaries"
-      Resource: "*"
+        - Effect: "Allow" # APM도구로 x-ray 할 때 쓸라고..
+          Action:
+            - "xray:PutTraceSegments"
+            - "xray:PutTelemetryRecords"
+            - "xray:GetSamplingRules"
+            - "xray:GetSamplingTargets"
+            - "xray:GetSamplingStatisticSummaries"
+          Resource: "*"
 
-    - Effect: "Allow" # S3에 swagger가져올겸.. 겸사겸사
-      Action:
-        - "s3:*"
-      Resource: "*"
+        - Effect: "Allow" # S3에 swagger가져올겸.. 겸사겸사
+          Action:
+            - "s3:*"
+          Resource: "*"
 
-    - Effect: "Allow" # SSM으로 환경변수 불러오는거 관리할라고
-      Action:
-        - "kms:Decrypt"
-        - "kms:Encrypt"
-        - "kms:DescribeKey"
-        - "ssm:GetParametersByPath"
-        - "ssm:GetParameters"
-        - "ssm:GetParameter"
-      Resource: "*"
+        - Effect: "Allow" # SSM으로 환경변수 불러오는거 관리할라고
+          Action:
+            - "kms:Decrypt"
+            - "kms:Encrypt"
+            - "kms:DescribeKey"
+            - "ssm:GetParametersByPath"
+            - "ssm:GetParameters"
+            - "ssm:GetParameter"
+          Resource: "*"
 
 package:
   exclude:
-    - serverless.yml
-    - .idea
-    - .serverless
-    - .gitignore
-  include:
     - ./**
+#  exclude:
+#    - serverless.yml
+#    - .idea
+#    - .serverless
+#    - .gitignore
+  include:
+    - ./bin/**
 
 functions:
   api:
@@ -77,7 +81,9 @@ functions:
 
 custom:
   customDomain:
-    domainName: "nearsfeed.alpha.squaaat.com"
+    domainName: "api.alpha.nearsfeed.com"
     basePath: ""
+    hostedZoneId: ${ssm:/nearsfeed/infra/aws_route_53/nearsfeed.com/zone_id~true}
     stage: ${self:provider.stage}
     createRoute53Record: true
+    certificateName: ${ssm:/nearsfeed/infra/aws_acm_certificate/nearsfeed.com/domain~true}

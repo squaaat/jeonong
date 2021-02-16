@@ -35,7 +35,7 @@ variable db_meta {
 }
 
 resource "aws_db_instance" "db" {
-  identifier = "${var.meta.service}-${var.meta.env}"
+  identifier = "${var.meta.service}-db-mysql"
 
   allocated_storage     = var.db_meta.volume_size
   max_allocated_storage = var.db_meta.maximum_volume_size
@@ -62,7 +62,7 @@ resource "aws_db_instance" "db" {
   db_subnet_group_name   = aws_db_subnet_group.subnets.id
 
   tags = {
-    Name        = "${var.meta.service}-${var.meta.env}"
+    Name        = "${var.meta.service}-db-mysql"
     Service     = var.meta.service
     Environment = var.meta.env
   }
@@ -97,19 +97,19 @@ output "tags" {
 }
 
 resource "aws_db_subnet_group" "subnets" {
-  name = "${var.meta.service}-${var.meta.env}"
+  name = "${var.meta.service}-db-mysql"
 
   subnet_ids = var.subnet_ids
 
   tags = {
-    Name        = "${var.meta.service}-${var.meta.env}"
+    Name        = "${var.meta.service}-db-mysql"
     Service     = var.meta.service
     Environment = var.meta.env
   }
 }
 
 resource "aws_security_group" "sg" {
-  name        = "${var.meta.service}-${var.meta.env}"
+  name        = "${var.meta.service}-db-mysql"
   description = "access for nearsfeed crews"
   vpc_id      = var.vpc_id
 
