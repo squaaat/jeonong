@@ -6,7 +6,7 @@ import (
 	"github.com/pkg/errors"
 	"gorm.io/gorm"
 
-	"github.com/squaaat/jeonong/api/internal/model"
+	"github.com/squaaat/nearsfeed/api/internal/model"
 )
 
 func GetKeywordByCode(tx *gorm.DB, code string) (*model.Keyword, error) {

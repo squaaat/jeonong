@@ -6,11 +6,11 @@ import (
 	"github.com/pkg/errors"
 	"gorm.io/gorm"
 
-	"github.com/squaaat/jeonong/api/internal/app"
-	"github.com/squaaat/jeonong/api/internal/er"
-	"github.com/squaaat/jeonong/api/internal/model"
-	categoryStore "github.com/squaaat/jeonong/api/internal/service/category/store"
-	keywordStore "github.com/squaaat/jeonong/api/internal/service/keyword/store"
+	"github.com/squaaat/nearsfeed/api/internal/app"
+	"github.com/squaaat/nearsfeed/api/internal/er"
+	"github.com/squaaat/nearsfeed/api/internal/model"
+	categoryStore "github.com/squaaat/nearsfeed/api/internal/service/category/store"
+	keywordStore "github.com/squaaat/nearsfeed/api/internal/service/keyword/store"
 )
 
 type Service struct {

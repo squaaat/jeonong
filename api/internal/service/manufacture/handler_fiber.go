@@ -4,7 +4,7 @@ import (
 	"github.com/gofiber/fiber/v2"
 	jsoniter "github.com/json-iterator/go"
 
-	"github.com/squaaat/jeonong/api/internal/er"
+	"github.com/squaaat/nearsfeed/api/internal/er"
 )
 
 func (s *Service) FiberHandlerPutManufacture(ctx *fiber.Ctx) error {

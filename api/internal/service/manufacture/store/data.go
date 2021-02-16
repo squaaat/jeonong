@@ -8,9 +8,9 @@ import (
 	"gopkg.in/yaml.v3"
 	"gorm.io/gorm"
 
-	_const "github.com/squaaat/jeonong/api/internal/const"
-	"github.com/squaaat/jeonong/api/internal/er"
-	"github.com/squaaat/jeonong/api/internal/model"
+	_const "github.com/squaaat/nearsfeed/api/internal/const"
+	"github.com/squaaat/nearsfeed/api/internal/er"
+	"github.com/squaaat/nearsfeed/api/internal/model"
 )
 
 type DataManufactures struct {

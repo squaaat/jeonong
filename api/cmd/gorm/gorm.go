@@ -4,10 +4,10 @@ import (
 	"github.com/rs/zerolog/log"
 	"github.com/spf13/cobra"
 
-	"github.com/squaaat/jeonong/api/internal/app"
-	"github.com/squaaat/jeonong/api/internal/config"
-	"github.com/squaaat/jeonong/api/internal/db"
-	"github.com/squaaat/jeonong/api/migrations"
+	"github.com/squaaat/nearsfeed/api/internal/app"
+	"github.com/squaaat/nearsfeed/api/internal/config"
+	"github.com/squaaat/nearsfeed/api/internal/db"
+	"github.com/squaaat/nearsfeed/api/migrations"
 )
 
 const (
@@ -22,7 +22,7 @@ const (
 func New() *cobra.Command {
 	c := &cobra.Command{
 		Use:     "gorm",
-		Short:   "jeonong-api cli gorm scripts",
+		Short:   "nearsfeed-api cli gorm scripts",
 		Aliases: []string{"g"},
 		Run: func(cmd *cobra.Command, _ []string) {
 			cmd.Help()

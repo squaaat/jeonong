@@ -6,9 +6,9 @@ import (
 	"github.com/aws/aws-lambda-go/lambda"
 	adapter "github.com/awslabs/aws-lambda-go-api-proxy/fiber"
 
-	"github.com/squaaat/jeonong/api/internal/app"
-	"github.com/squaaat/jeonong/api/internal/config"
-	serverhttp "github.com/squaaat/jeonong/api/internal/server/http"
+	"github.com/squaaat/nearsfeed/api/internal/app"
+	"github.com/squaaat/nearsfeed/api/internal/config"
+	serverhttp "github.com/squaaat/nearsfeed/api/internal/server/http"
 )
 
 func main() {

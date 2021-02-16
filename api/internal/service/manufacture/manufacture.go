@@ -6,11 +6,11 @@ import (
 	"github.com/pkg/errors"
 	"gorm.io/gorm"
 
-	"github.com/squaaat/jeonong/api/internal/app"
-	"github.com/squaaat/jeonong/api/internal/er"
-	"github.com/squaaat/jeonong/api/internal/model"
-	keywordStore "github.com/squaaat/jeonong/api/internal/service/keyword/store"
-	manufactureStore "github.com/squaaat/jeonong/api/internal/service/manufacture/store"
+	"github.com/squaaat/nearsfeed/api/internal/app"
+	"github.com/squaaat/nearsfeed/api/internal/er"
+	"github.com/squaaat/nearsfeed/api/internal/model"
+	keywordStore "github.com/squaaat/nearsfeed/api/internal/service/keyword/store"
+	manufactureStore "github.com/squaaat/nearsfeed/api/internal/service/manufacture/store"
 )
 
 type Service struct {
@@ -31,7 +31,7 @@ type In struct {
 
 type Out struct {
 	Manufactures []*model.Manufacture
-	Manufacture *model.Manufacture
+	Manufacture  *model.Manufacture
 }
 
 func (s *Service) PutManufacture(man string) (*Out, error) {

@@ -6,9 +6,9 @@ import (
 	"github.com/gofiber/fiber/v2"
 	"github.com/gofiber/fiber/v2/middleware/cors"
 
-	"github.com/squaaat/jeonong/api/internal/app"
-	catSrv "github.com/squaaat/jeonong/api/internal/service/category"
-	manSrv "github.com/squaaat/jeonong/api/internal/service/manufacture"
+	"github.com/squaaat/nearsfeed/api/internal/app"
+	catSrv "github.com/squaaat/nearsfeed/api/internal/service/category"
+	manSrv "github.com/squaaat/nearsfeed/api/internal/service/manufacture"
 )
 
 func New(a *app.Application) *fiber.App {

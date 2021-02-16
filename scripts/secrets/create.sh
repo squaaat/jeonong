@@ -3,8 +3,8 @@
 # DD=/squaaat/squaaat-api/alpha/env
 
 region="ap-northeast-2"
-project="jeonong"
-app="jeonong-api"
+project="nearsfeed"
+app="nearsfeed-api"
 environment="alpha"
 
 usage() {
@@ -12,12 +12,12 @@ usage() {
 Description: Create AWS System Store Manager Parameter
 Usage: $(basename $0)
   -r region (default: ap-northeast-2)
-  -a app (default: jeonong-api)
+  -a app (default: nearsfeed-api)
   -e environment (default: alpha)
   [-h help]
 
 Example:
-  ./scripts/secrets/create.sh -r ap-northeast-2 -a jeonong-api -e alpha
+  ./scripts/secrets/create.sh -r ap-northeast-2 -a nearsfeed-api -e alpha
 "
 exit 1;
 }
@@ -58,4 +58,4 @@ aws ssm put-parameter \
 
 #aws ssm delete-parameter \
 #  --region ap-northeast-2 \
-#  --name "/jeonong/jeonong-api/alpha/env" | jq
+#  --name "/nearsfeed/nearsfeed-api/alpha/env" | jq

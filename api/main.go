@@ -1,7 +1,7 @@
 package main
 
 import (
-	"github.com/squaaat/jeonong/api/cmd"
+	"github.com/squaaat/nearsfeed/api/cmd"
 )
 
 func main() {

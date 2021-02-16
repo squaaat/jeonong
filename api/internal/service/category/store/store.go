@@ -3,9 +3,9 @@ package store
 import (
 	"github.com/rs/zerolog/log"
 
-	"github.com/squaaat/jeonong/api/internal/app"
-	"github.com/squaaat/jeonong/api/internal/er"
-	keywordStore "github.com/squaaat/jeonong/api/internal/service/keyword/store"
+	"github.com/squaaat/nearsfeed/api/internal/app"
+	"github.com/squaaat/nearsfeed/api/internal/er"
+	keywordStore "github.com/squaaat/nearsfeed/api/internal/service/keyword/store"
 )
 
 type Service struct {

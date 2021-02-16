@@ -1,8 +1,8 @@
 #!/bin/zsh
 
 region="ap-northeast-2"
-project="jeonong"
-app="jeonong-api"
+project="nearsfeed"
+app="nearsfeed-api"
 environment="alpha"
 outDir="./"
 
@@ -11,13 +11,13 @@ usage() {
 Description: Printout AWS System Store Manager Parameter
 Usage: $(basename $0)
   -r region (default: ap-northeast-2)
-  -a app (default: jeonong-api)
+  -a app (default: nearsfeed-api)
   -e environment (default: alpha)
   -o outDir (default: ./)
   [-h help]
 
 Example:
-  ./scripts/secrets/printout.sh -r ap-northeast-2 -a jeonong-api -e alpha
+  ./scripts/secrets/printout.sh -r ap-northeast-2 -a nearsfeed-api -e alpha
 "
 exit 1;
 }

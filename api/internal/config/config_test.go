@@ -7,7 +7,7 @@ import (
 
 	"github.com/stretchr/testify/assert"
 
-	_const "github.com/squaaat/jeonong/api/internal/const"
+	_const "github.com/squaaat/nearsfeed/api/internal/const"
 )
 
 func TestMustInit(t *testing.T) {

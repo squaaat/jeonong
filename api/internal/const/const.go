@@ -6,8 +6,8 @@ import (
 )
 
 const (
-	Project = "jeonong"
-	App     = "jeonong-api"
+	Project = "nearsfeed"
+	App     = "nearsfeed-api"
 
 	KeyEnv  = "J_ENV"
 	KeyCicd = "J_CICD"

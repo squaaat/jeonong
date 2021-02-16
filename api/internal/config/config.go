@@ -11,7 +11,7 @@ import (
 	"github.com/rs/zerolog/log"
 	"github.com/spf13/viper"
 
-	_const "github.com/squaaat/jeonong/api/internal/const"
+	_const "github.com/squaaat/nearsfeed/api/internal/const"
 )
 
 func MustInit(e string, cicd bool) *Config {

@@ -7,11 +7,11 @@ import (
 	"github.com/rs/zerolog/log"
 	"github.com/spf13/cobra"
 
-	"github.com/squaaat/jeonong/api/internal/app"
-	"github.com/squaaat/jeonong/api/internal/config"
-	categoryStore "github.com/squaaat/jeonong/api/internal/service/category/store"
-	manufactureStore "github.com/squaaat/jeonong/api/internal/service/manufacture/store"
-	"github.com/squaaat/jeonong/api/migrations"
+	"github.com/squaaat/nearsfeed/api/internal/app"
+	"github.com/squaaat/nearsfeed/api/internal/config"
+	categoryStore "github.com/squaaat/nearsfeed/api/internal/service/category/store"
+	manufactureStore "github.com/squaaat/nearsfeed/api/internal/service/manufacture/store"
+	"github.com/squaaat/nearsfeed/api/migrations"
 )
 
 func newGormMigrate() *cobra.Command {

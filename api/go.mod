@@ -1,4 +1,4 @@
-module github.com/squaaat/jeonong/api
+module github.com/squaaat/nearsfeed/api
 
 go 1.14
 

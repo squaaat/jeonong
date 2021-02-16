@@ -15,8 +15,8 @@ import (
 	"gorm.io/gorm"
 	"gorm.io/gorm/schema"
 
-	"github.com/squaaat/jeonong/api/internal/config"
-	_const "github.com/squaaat/jeonong/api/internal/const"
+	"github.com/squaaat/nearsfeed/api/internal/config"
+	_const "github.com/squaaat/nearsfeed/api/internal/const"
 )
 
 type Client struct {

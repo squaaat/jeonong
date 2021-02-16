@@ -2,14 +2,15 @@ package migrations
 
 import (
 	"fmt"
-	"github.com/go-gormigrate/gormigrate/v2"
-	"github.com/rs/zerolog/log"
-	"gorm.io/gorm"
 	"io/ioutil"
 	"os"
 
-	"github.com/squaaat/jeonong/api/internal/app"
-	"github.com/squaaat/jeonong/api/internal/model"
+	"github.com/go-gormigrate/gormigrate/v2"
+	"github.com/rs/zerolog/log"
+	"gorm.io/gorm"
+
+	"github.com/squaaat/nearsfeed/api/internal/app"
+	"github.com/squaaat/nearsfeed/api/internal/model"
 )
 
 type Syncker struct {

@@ -1,4 +1,4 @@
-# jeonong
+# nearsfeed
 
 프로젝트 전농.
 
@@ -14,21 +14,21 @@
   SSM 에 값 생성하기
 
 ```bash
-./scripts/secrets/create.sh -r ap-northeast-2 -a jeonong-api -e alpha
+./scripts/secrets/create.sh -r ap-northeast-2 -a nearsfeed-api -e alpha
 ```
 
 - printout
   SSM 에 있는 값 파일로 만들기
 
 ```bash
-./scripts/secrets/printout.sh -r ap-northeast-2 -a jeonong-api -e alpha -o ./
+./scripts/secrets/printout.sh -r ap-northeast-2 -a nearsfeed-api -e alpha -o ./
 ```
 
 - update
   SSM 에 있는 값 파일로 만든거를 기반으로 내용 업데이트 하기
 
 ```bash
-./scripts/secrets/update.sh -r ap-northeast-2 -a jeonong-api -e alpha -i ./
+./scripts/secrets/update.sh -r ap-northeast-2 -a nearsfeed-api -e alpha -i ./
 ```
 
 # 초기멤버

@@ -6,16 +6,16 @@ import (
 	"github.com/rs/zerolog/log"
 	"github.com/spf13/cobra"
 
-	"github.com/squaaat/jeonong/api/internal/app"
-	"github.com/squaaat/jeonong/api/internal/config"
-	serverhttp "github.com/squaaat/jeonong/api/internal/server/http"
+	"github.com/squaaat/nearsfeed/api/internal/app"
+	"github.com/squaaat/nearsfeed/api/internal/config"
+	serverhttp "github.com/squaaat/nearsfeed/api/internal/server/http"
 )
 
 func newHTTPCommand() *cobra.Command {
 	c := &cobra.Command{
 		Use:     "http",
 		Aliases: []string{"h"},
-		Short:   "about jeonong-api http server",
+		Short:   "about nearsfeed-api http server",
 		Run: func(cmd *cobra.Command, _ []string) {
 			cmd.Help()
 		},

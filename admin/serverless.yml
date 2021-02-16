@@ -9,11 +9,11 @@ J_ENV: ${env.J_ENV}
 J_CICD: ${env.J_CICD}
 GOOGLE_OAUTH_CLIENT_ID: ${env.GOOGLE_OAUTH_CLIENT_ID}
 
-jeonong-admin:
+nearsfeed-admin:
   component: "./node_modules/@sls-next/serverless-component"
   inputs:
-    name: jeonong-admin
-    bucketName: jeonong-admin
+    name: nearsfeed-admin
+    bucketName: nearsfeed-admin
     bucketRegion: us-east-1
     build:
       env:

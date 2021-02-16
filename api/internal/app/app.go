@@ -3,8 +3,8 @@ package app
 import (
 	"github.com/rs/zerolog/log"
 
-	"github.com/squaaat/jeonong/api/internal/config"
-	"github.com/squaaat/jeonong/api/internal/db"
+	"github.com/squaaat/nearsfeed/api/internal/config"
+	"github.com/squaaat/nearsfeed/api/internal/db"
 )
 
 type Application struct {
