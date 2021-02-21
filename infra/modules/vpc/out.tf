@@ -53,3 +53,12 @@ output "subnet_private_a_id" {
 output "subnet_private_b_id" {
   value = module.subnet_private["b"].subnet_id
 }
+
+
+output "subnet_private_nat_a_id" {
+  value = module.subnet_private_nat["a"].subnet_id
+}
+
+output "subnet_private_nat_b_id" {
+  value = module.subnet_private_nat["b"].subnet_id
+}

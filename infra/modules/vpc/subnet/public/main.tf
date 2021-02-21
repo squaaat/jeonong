@@ -27,18 +27,18 @@ resource "aws_subnet" "subnet" {
   }
 }
 
-# resource "aws_eip" "eip" {
-#   vpc = true
-# }
+resource "aws_eip" "eip" {
+  vpc = true
+}
 
-# resource "aws_nat_gateway" "nat" {
-#   allocation_id = aws_eip.eip.id
-#   subnet_id     = aws_subnet.subnet.id
+resource "aws_nat_gateway" "nat" {
+  allocation_id = aws_eip.eip.id
+  subnet_id     = aws_subnet.subnet.id
 
-#   tags = {
-#     Name = "${var.meta.crew}-NAT-GW-${var.az}"
-#   }
-# }
+  tags = {
+    Name = "${var.meta.team}-NAT-GW-${var.az}"
+  }
+}
 
 resource "aws_route_table_association" "associate" {
   subnet_id      = aws_subnet.subnet.id

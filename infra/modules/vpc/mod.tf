@@ -37,17 +37,17 @@ locals {
     //    },
   }
 
-  //  subnet_private_nat = {
-  //    a = {
-  //      az         = data.aws_availability_zone.a.name,
-  //      nat_id     = module.subnet_public[a].nat_id
-  //      cidr_block = "${substr(var.cidr_block, 0, 6)}.64.0/23"
-  //    },
-  //    b = {
-  //      az         = data.aws_availability_zone.b.name,
-  //      nat_id     = module.subnet_public[b].nat_id
-  //      cidr_block = "${substr(var.cidr_block, 0, 6)}.72.0/23"
-  //    },
+  subnet_private_nat = {
+    a = {
+      az         = data.aws_availability_zone.a.name,
+      nat_id     = module.subnet_public["a"].nat_id
+      cidr_block = "${substr(var.cidr_block, 0, 6)}.64.0/23"
+    },
+    b = {
+      az         = data.aws_availability_zone.b.name,
+      nat_id     = module.subnet_public["b"].nat_id
+      cidr_block = "${substr(var.cidr_block, 0, 6)}.72.0/23"
+    },
   //    c = {
   //      az         = data.aws_availability_zone.c.name,
   //      nat_id     = module.subnet_public[c].nat_id
@@ -58,7 +58,7 @@ locals {
   //      nat_id     = module.subnet_public[d].nat_id
   //      cidr_block = "${substr(var.cidr_block, 0, 6)}.88.0/23"
   //    },
-  //  }
+  }
 }
 
 module "subnet_public" {
@@ -85,17 +85,18 @@ module "subnet_private" {
 }
 
 
-//module "subnet_private_nat" {
-//  for_each = local.subnet_private_nat
-//
-//  source = "./subnet/private_nat"
-//
-//  az = each.value.az
-//  subnet_ipv4_cidr_block = each.value.cidr_block
-//  vpc_id = aws_vpc.nearsfeed.id
-//  igw_main_id = aws_internet_gateway.nearsfeed.id
-//  meta = var.meta
-//}
+module "subnet_private_nat" {
+  source = "./subnet/private_nat"
+
+  for_each = tomap(local.subnet_private_nat)
+
+  az = each.value.az
+  nat_id = each.value.nat_id
+  subnet_ipv4_cidr_block = each.value.cidr_block
+
+  vpc_id = aws_vpc.nearsfeed.id
+  meta = var.meta
+}
 
 
 

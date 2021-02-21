@@ -52,6 +52,7 @@ module "rds" {
     maximum_volume_size = 100
     dbname              = "nearsfeed"
     username            = "grandcanyon"
+    publicly_accessible = true
   }
 }
 

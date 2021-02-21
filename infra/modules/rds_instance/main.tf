@@ -1,39 +1,3 @@
-variable "meta" {
-  type = object({
-    service = string
-    env     = string
-  })
-}
-
-variable "sg_ids" {
-  type = list(string)
-}
-
-variable "subnet_ids" {
-  type = list(string)
-}
-
-variable "db_password" {
-  type = string
-}
-
-variable "vpc_id" {
-  type = string
-}
-
-variable db_meta {
-  type = object({
-    az                  = string
-    engine              = string
-    engine_version      = string
-    volume_size         = number
-    maximum_volume_size = number
-    instance_class      = string
-    dbname              = string
-    username            = string
-  })
-}
-
 resource "aws_db_instance" "db" {
   identifier = "${var.meta.service}-db-mysql"
 
@@ -48,7 +12,7 @@ resource "aws_db_instance" "db" {
   password              = var.db_password
 
   allow_major_version_upgrade = true
-
+  publicly_accessible = var.db_meta.publicly_accessible
   availability_zone = var.db_meta.az
 
   final_snapshot_identifier = false # for test
@@ -68,34 +32,6 @@ resource "aws_db_instance" "db" {
   }
 }
 
-output "endpoint" {
-  value = aws_db_instance.db.endpoint
-}
-
-output "arn" {
-  value = aws_db_instance.db.arn
-}
-
-output "id" {
-  value = aws_db_instance.db.id
-}
-
-output "identifier" {
-  value = aws_db_instance.db.identifier
-}
-
-output "password" {
-  value = aws_db_instance.db.password
-}
-
-output "resource_id" {
-  value = aws_db_instance.db.resource_id
-}
-
-output "tags" {
-  value = aws_db_instance.db.tags
-}
-
 resource "aws_db_subnet_group" "subnets" {
   name = "${var.meta.service}-db-mysql"
 
@@ -110,7 +46,7 @@ resource "aws_db_subnet_group" "subnets" {
 
 resource "aws_security_group" "sg" {
   name        = "${var.meta.service}-db-mysql"
-  description = "access for nearsfeed crews"
+  description = "access for database"
   vpc_id      = var.vpc_id
 
   ingress {

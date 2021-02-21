@@ -7,6 +7,6 @@ output "rtb_id" {
 }
 
 //// for subnet 'private_nat'
-//output "nat_id" {
-//  value = aws_nat_gateway.nat.id
-//}
+output "nat_id" {
+  value = aws_nat_gateway.nat.id
+}

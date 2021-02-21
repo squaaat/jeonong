@@ -34,4 +34,4 @@ function add() {
 }
 
 add members
-add nearsfeed-alpha
+add nearsfeed-db-mysql

@@ -2,7 +2,7 @@ resource "aws_route_table" "rtb" {
   vpc_id = var.vpc_id
 
   tags = {
-    Name = "private_${var.meta.team}_${var.az}",
+    Name = "private_nat_${var.meta.team}_${var.az}",
   }
 }
 
