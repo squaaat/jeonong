@@ -40,7 +40,7 @@ func (s *Service) PutManufacture(man string) (*Out, error) {
 	var manufacture *model.Manufacture
 
 	err := s.App.ServiceDB.DB.Transaction(func(tx *gorm.DB) error {
-		k, err := keywordStore.MustGetKeyword(tx, man, "")
+		k, err := keywordStore.MustGetKeyword(tx, man, man)
 		if err != nil {
 			return err
 		}

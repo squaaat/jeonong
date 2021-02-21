@@ -1,6 +1,8 @@
 package store
 
 import (
+	"fmt"
+
 	"github.com/rs/zerolog/log"
 
 	"github.com/squaaat/nearsfeed/api/internal/app"
@@ -43,10 +45,11 @@ func (s *Service) MustLoadDataAtLocal() error {
 		if err != nil {
 			return er.WrapOp(err, op)
 		}
-		pk, err := keywordStore.GetKeywordByCode(s.App.ServiceDB.DB, cat.Code)
+		pk, err := keywordStore.GetKeywordByCode(s.App.ServiceDB.DB, cat.ParentCode)
 		if err != nil {
 			return er.WrapOp(err, op)
 		}
+		fmt.Println(k.Code, pk.Code)
 		c, err := AddCategoryIfNotExist(s.App.ServiceDB.DB, k, pk)
 		if err != nil {
 			return er.WrapOp(err, op)
@@ -58,7 +61,7 @@ func (s *Service) MustLoadDataAtLocal() error {
 		if err != nil {
 			return er.WrapOp(err, op)
 		}
-		pk, err := keywordStore.GetKeywordByCode(s.App.ServiceDB.DB, cat.Code)
+		pk, err := keywordStore.GetKeywordByCode(s.App.ServiceDB.DB, cat.ParentCode)
 		if err != nil {
 			return er.WrapOp(err, op)
 		}

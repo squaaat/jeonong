@@ -17,23 +17,19 @@ import (
 
 func MustInit(e string, cicd bool) *Config {
 	op := er.CallerOp()
-	fmt.Println(op, "1")
 	sess, err := session.NewSessionWithOptions(session.Options{
 		SharedConfigState: session.SharedConfigEnable,
 	})
-	fmt.Println(op, "2")
 	if err != nil {
 		log.Fatal().Err(err).Send()
 		return nil
 	}
-	fmt.Println(op, "3")
 	s := ssm.New(sess)
-	fmt.Println(op, "4", fmt.Sprintf("/%s/%s/%s/application.yml", _const.Project, _const.App, e))
+	fmt.Println(op, fmt.Sprintf("/%s/%s/%s/application.yml", _const.Project, _const.App, e))
 	param, err := s.GetParameter(&ssm.GetParameterInput{
 		Name:           aws.String(fmt.Sprintf("/%s/%s/%s/application.yml", _const.Project, _const.App, e)),
 		WithDecryption: aws.Bool(true),
 	})
-	fmt.Println(op, "5")
 
 	if err != nil {
 		log.Fatal().Err(err).Send()

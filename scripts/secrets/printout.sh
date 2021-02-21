@@ -46,4 +46,4 @@ aws ssm get-parameter \
 
 echo "${YML}"
 echo "${YML}" > ${outDir}./application.${environment}.yml
-echo "${outDir}./application.${environment}.yml)"
+echo "${outDir}./application.${app}.${environment}.yml)"

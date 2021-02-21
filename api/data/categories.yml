@@ -46,7 +46,7 @@ depth1:
   -
     code: hobby
     sort: 12
-    name: 완구/취
+    name: 완구/취미
   -
     code: office
     sort: 13
@@ -57,29 +57,24 @@ depth1:
     name: 반려동물용품
   -
     code: health
-    sort: 15
     name: 헬스/건강식품
+    sort: 15
 
 depth2:
-  # fashion-sundries
-  -
-    parentCode: fashion-sundries
+  - parentCode: fashion-sundries
     code: womanclothe
     name: 여성패션
     sort: 1
-  -
-    parentCode: fashion-sundries
+  - parentCode: fashion-sundries
     code: manclothe
     name: 남성패션
     sort: 2
-  -
-    parentCode: fashion-sundries
+  - parentCode: fashion-sundries
     code: childfashion
     name: 유아동패션
     sort: 3
 
 depth3:
-  # womanclothe
   -
     parentCode: womanclothe
     code: clothes
@@ -100,7 +95,6 @@ depth3:
     code: bag-sundries
     name: 가방/잡화
     sort: 4
-  # manclothe
   -
     parentCode: manclothe
     code: clothes
@@ -121,7 +115,6 @@ depth3:
     code: bag-sundries
     name: 가방/잡화
     sort: 4
-  # childfashion
   -
     parentCode: childfashion
     code: baby

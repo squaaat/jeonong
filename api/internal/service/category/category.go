@@ -40,7 +40,7 @@ func (s *Service) PutCategory(in []string) (*Out, error) {
 
 	err := s.App.ServiceDB.DB.Transaction(func(tx *gorm.DB) error {
 		for i, keyword := range in {
-			k, err := keywordStore.MustGetKeyword(tx, keyword, "")
+			k, err := keywordStore.MustGetKeyword(tx, keyword, keyword)
 			if err != nil {
 				return err
 			}

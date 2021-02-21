@@ -11,10 +11,13 @@
   "dependencies": {
     "@ant-design/icons": "^4.5.0",
     "@sls-next/serverless-component": "^1.18.0",
+    "@types/js-yaml": "^4.0.0",
     "antd": "^4.12.3",
     "aws-sdk": "^2.840.0",
+    "axios": "^0.21.1",
     "babel-plugin-styled-components": "^1.12.0",
     "global": "^4.4.0",
+    "js-yaml": "^4.0.0",
     "next": "^10.0.6",
     "open-color": "^1.8.0",
     "react": "^17.0.1",

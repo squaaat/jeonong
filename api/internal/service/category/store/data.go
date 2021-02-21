@@ -14,16 +14,16 @@ import (
 )
 
 type DataCategories struct {
-	Depth1 []*Category `yml:"depth1"`
-	Depth2 []*Category `yml:"depth2"`
-	Depth3 []*Category `yml:"depth3"`
+	Depth1 []*Category `yaml:"depth1"`
+	Depth2 []*Category `yaml:"depth2"`
+	Depth3 []*Category `yaml:"depth3"`
 }
 
 type Category struct {
-	ParentName string `yml:"parentName"`
-	Sort       int64  `yml:"sort"`
-	Name       string `yml:"name"`
-	Code       string `yml:"code"`
+	Sort       int64  `yaml:"sort"`
+	Name       string `yaml:"name"`
+	Code       string `yaml:"code"`
+	ParentCode string `yaml:"parentCode"`
 }
 
 func MustLoadDataAtLocal() (*DataCategories, error) {

@@ -64,11 +64,14 @@ func (m *Keyword) TableName() string {
 type Category struct {
 	DefaultModel
 
-	KeywordID string  `gorm:"type:CHAR(36);not null"`
-	Keyword   Keyword `gorm:"foreignKey:KeywordID"`
+	ParentCategoryID string `gorm:"type:CHAR(36);not null"`
+	ParentCategory interface{} `gorm:"foreignKey:KeywordID"`
 
 	ParentKeywordID string  `gorm:"type:CHAR(36)"`
 	ParentKeyword   Keyword `gorm:"foreignKey:ParentKeywordID"`
+
+	KeywordID string  `gorm:"type:CHAR(36);not null"`
+	Keyword   Keyword `gorm:"foreignKey:KeywordID"`
 }
 
 func (m *Category) TableName() string {

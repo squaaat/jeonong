@@ -36,7 +36,7 @@ done
 [ -z "${app}" ] && >&2 echo "Error: -n app required" && usage
 [ -z "${environment}" ] && >&2 echo "Error: -m environment required" && usage
 
-YML="$(cat ${inDir}./application.${environment}.yml)"
+YML="$(cat ${inDir}./application.${app}.${environment}.yml)"
 echo "${YML}"
 
 echo "- Output -------------------------------"

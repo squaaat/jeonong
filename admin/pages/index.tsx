@@ -1,11 +1,17 @@
 import { FC } from 'react'
 import DefaultLayout from 'components/DefaultLayout'
 import { PageHeader, Descriptions, Row, Col, Card, Layout, Form, Select } from 'antd';
-
 import { Session, MockSession } from 'models/Session'
+import { Category, GetCategories} from 'models/Category'
+
 
 type PageProps = {
   session: Session;
+  categoryManagement: CategoryManagement;
+}
+
+type CategoryManagement = {
+  selectBox: Category[]
 }
 
 type ServerProps = {
@@ -180,9 +186,12 @@ const IndexPage:FC<PageProps> = ({ session }) => {
 
 // This function gets called at build time
 export async function getStaticProps() {
-  
+  const categoriesSelectBox = await GetCategories()
   const data: ServerProps = {
     props: {
+      categoryManagement: {
+        selectBox: categoriesSelectBox,
+      },
       session: MockSession,
     }
   }
