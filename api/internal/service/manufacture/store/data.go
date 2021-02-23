@@ -41,20 +41,17 @@ func MustLoadDataAtLocal() (*DataManufactures, error) {
 	return data, nil
 }
 
-func AddManufactureIfNotExist(tx *gorm.DB, keyword *model.Keyword, companyNumber string) (*model.Manufacture, error) {
-	if keyword == nil {
-		return nil, errors.New("'keyword' is primary")
-	}
-
+func AddManufactureIfNotExist(tx *gorm.DB, m *Manufacture) (*model.Manufacture, error) {
 	man := &model.Manufacture{
-		KeywordID:                 keyword.ID,
-		CompanyRegistrationNumber: companyNumber,
+		Name: m.Name,
+		Code: m.Code,
+		CompanyRegistrationNumber: m.CompanyRegistrationNumber,
 		DefaultModel: model.DefaultModel{
 			Status: model.StatusIdle,
 		},
 	}
 
-	subTx := tx.Take(man, "keyword_id = ?", man.KeywordID).Scan(man)
+	subTx := tx.Take(man, "name = ? AND code = ?", m.Name, m.Code).Scan(man)
 	if subTx.Error != nil {
 		if !errors.Is(subTx.Error, gorm.ErrRecordNotFound) {
 			return nil, subTx.Error
@@ -69,7 +66,7 @@ func AddManufactureIfNotExist(tx *gorm.DB, keyword *model.Keyword, companyNumber
 		return nil, subTx.Error
 	}
 	if subTx.RowsAffected != 1 {
-		return nil, fmt.Errorf("failed create manufacture : [%s]", keyword.Name)
+		return nil, fmt.Errorf("failed create manufacture : [%v]", man)
 	}
 
 	return man, nil

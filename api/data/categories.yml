@@ -1,8 +1,8 @@
 depth1:
   -
+    name: 패션의류/잡화
     code: fashion-sundries
     sort: 1
-    name: 패션의류/잡화
   -
     code: beauty
     sort: 2
@@ -126,7 +126,7 @@ depth3:
     name: 여아
     sort: 2
   -
-    parentName: childfashion
+    parentCode: childfashion
     code: boy
     name: 남아
     sort: 3

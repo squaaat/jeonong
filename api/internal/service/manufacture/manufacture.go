@@ -9,7 +9,6 @@ import (
 	"github.com/squaaat/nearsfeed/api/internal/app"
 	"github.com/squaaat/nearsfeed/api/internal/er"
 	"github.com/squaaat/nearsfeed/api/internal/model"
-	keywordStore "github.com/squaaat/nearsfeed/api/internal/service/keyword/store"
 	manufactureStore "github.com/squaaat/nearsfeed/api/internal/service/manufacture/store"
 )
 
@@ -34,24 +33,18 @@ type Out struct {
 	Manufacture  *model.Manufacture
 }
 
-func (s *Service) PutManufacture(man string) (*Out, error) {
+func (s *Service) PutManufacture(name string) (*Out, error) {
 	op := er.CallerOp()
-	var keyword *model.Keyword
 	var manufacture *model.Manufacture
 
 	err := s.App.ServiceDB.DB.Transaction(func(tx *gorm.DB) error {
-		k, err := keywordStore.MustGetKeyword(tx, man, man)
+		m, err := manufactureStore.AddManufactureIfNotExist(tx, &manufactureStore.Manufacture{
+			Name: name,
+		})
 		if err != nil {
 			return err
 		}
-
-		m, err := manufactureStore.AddManufactureIfNotExist(tx, k, "")
-		if err != nil {
-			return err
-		}
-		keyword = k
 		manufacture = m
-		manufacture.Keyword = *k
 		return nil
 	})
 	if err != nil {

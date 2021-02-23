@@ -13,7 +13,6 @@ func Load() []interface{} {
 		&Article{},
 		&ArticlesDiscount{},
 		&Sale{},
-		&Keyword{},
 		&Product{},
 		&Category{},
 		&Manufacture{},

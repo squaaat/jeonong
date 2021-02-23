@@ -10,7 +10,6 @@ import (
 	"github.com/squaaat/nearsfeed/api/internal/er"
 	"github.com/squaaat/nearsfeed/api/internal/model"
 	categoryStore "github.com/squaaat/nearsfeed/api/internal/service/category/store"
-	keywordStore "github.com/squaaat/nearsfeed/api/internal/service/keyword/store"
 )
 
 type Service struct {
@@ -35,35 +34,27 @@ type Out struct {
 
 func (s *Service) PutCategory(in []string) (*Out, error) {
 	op := er.CallerOp()
-	var keywords = make([]*model.Keyword, len(in))
 	var categories = make([]*model.Category, len(in))
 
 	err := s.App.ServiceDB.DB.Transaction(func(tx *gorm.DB) error {
-		for i, keyword := range in {
-			k, err := keywordStore.MustGetKeyword(tx, keyword, keyword)
-			if err != nil {
-				return err
-			}
-			keywords[i] = k
-		}
 
-		for i, _ := range keywords {
-			if i == (len(keywords) - 1) {
-				break
-			}
-			if i == 0 {
-				cat, err := categoryStore.AddCategoryIfNotExist(tx, keywords[i], keywords[i])
-				if err != nil {
-					return err
-				}
-				categories[i] = cat
-			}
-			cat, err := categoryStore.AddCategoryIfNotExist(tx, keywords[i+1], keywords[i])
-			if err != nil {
-				return err
-			}
-			categories[i+1] = cat
-		}
+		//for i, _ := range keywords {
+		//	if i == (len(keywords) - 1) {
+		//		break
+		//	}
+		//	if i == 0 {
+		//		cat, err := categoryStore.AddCategoryIfNotExist(tx, keywords[i], keywords[i])
+		//		if err != nil {
+		//			return err
+		//		}
+		//		categories[i] = cat
+		//	}
+		//	cat, err := categoryStore.AddCategoryIfNotExist(tx, keywords[i+1], keywords[i])
+		//	if err != nil {
+		//		return err
+		//	}
+		//	categories[i+1] = cat
+		//}
 		return nil
 	})
 	if err != nil {

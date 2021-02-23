@@ -5,7 +5,6 @@ import (
 
 	"github.com/squaaat/nearsfeed/api/internal/app"
 	"github.com/squaaat/nearsfeed/api/internal/er"
-	keywordStore "github.com/squaaat/nearsfeed/api/internal/service/keyword/store"
 )
 
 type Service struct {
@@ -28,11 +27,7 @@ func (s *Service) MustLoadDataAtLocal() error {
 	}
 
 	for _, man := range data.Manufactures {
-		k, err := keywordStore.MustGetKeyword(s.App.ServiceDB.DB, man.Name, man.Code)
-		if err != nil {
-			return er.WrapOp(err, op)
-		}
-		c, err := AddManufactureIfNotExist(s.App.ServiceDB.DB, k, man.CompanyRegistrationNumber)
+		c, err := AddManufactureIfNotExist(s.App.ServiceDB.DB, man)
 		if err != nil {
 			return er.WrapOp(err, op)
 		}

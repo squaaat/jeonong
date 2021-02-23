@@ -50,28 +50,20 @@ func (m *Product) TableName() string {
 	return "j_product"
 }
 
-type Keyword struct {
-	DefaultModel
-
-	Name string `gorm:"type:VARCHAR(100);not null;uniqueIndex"`
-	Code string `gorm:"type:VARCHAR(100);not null"`
-}
-
-func (m *Keyword) TableName() string {
-	return "j_keyword"
-}
-
 type Category struct {
 	DefaultModel
 
-	ParentCategoryID string `gorm:"type:CHAR(36);not null"`
-	ParentCategory interface{} `gorm:"foreignKey:KeywordID"`
+	Category1ID string `gorm:"type:CHAR(36);index:category1ID_and_status"`
+	Category2ID string `gorm:"type:CHAR(36);index:category2ID_and_status"`
+	Category3ID string `gorm:"type:CHAR(36);index:category3ID_and_status"`
+	Category4ID string `gorm:"type:CHAR(36);index:category4ID_and_status"`
 
-	ParentKeywordID string  `gorm:"type:CHAR(36)"`
-	ParentKeyword   Keyword `gorm:"foreignKey:ParentKeywordID"`
-
-	KeywordID string  `gorm:"type:CHAR(36);not null"`
-	Keyword   Keyword `gorm:"foreignKey:KeywordID"`
+	Status EnumStatus  `gorm:"type:ENUM('WAIT','IDLE','INVALID','DELETED');default:'WAIT';index:category1ID_and_status,category2ID_and_status,category3ID_and_status,category4ID_and_status"`
+	Sort int64
+	Depth int64
+	Code string
+	Name string
+	FullName string
 }
 
 func (m *Category) TableName() string {
@@ -81,9 +73,8 @@ func (m *Category) TableName() string {
 type Manufacture struct {
 	DefaultModel
 
-	KeywordID string  `gorm:"type:CHAR(36);not null"`
-	Keyword   Keyword `gorm:"foreignKey:KeywordID"`
-
+	Code string
+	Name string
 	CompanyRegistrationNumber string `gorm:"type:VARCHAR(100)"`
 }
 
