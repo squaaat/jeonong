@@ -10,6 +10,7 @@ import (
 	"github.com/squaaat/nearsfeed/api/internal/app"
 	"github.com/squaaat/nearsfeed/api/internal/config"
 	categoryStore "github.com/squaaat/nearsfeed/api/internal/service/category/store"
+	manufactureStore "github.com/squaaat/nearsfeed/api/internal/service/manufacture/store"
 	"github.com/squaaat/nearsfeed/api/migrations"
 )
 
@@ -52,12 +53,12 @@ func newGormMigrateSync() *cobra.Command {
 		if err != nil {
 			fmt.Println(err.Error())
 		}
-		//manStore := manufactureStore.New(a)
-		//err = manStore.MustLoadDataAtLocal()
-		//if err != nil {
-		//	fmt.Println(err.Error())
-		//}
+		manStore := manufactureStore.New(a)
 
+		err = manStore.MustLoadDataAtLocal()
+		if err != nil {
+			fmt.Println(err.Error())
+		}
 	}
 
 	return c

@@ -17,7 +17,7 @@ func (s *Service) FiberHandlerPutCategory(ctx *fiber.Ctx) error {
 		return ctx.Status(er.ToHTTPStatus(err)).SendString(er.ToJSON(err))
 	}
 
-	out, err := s.PutCategory(in.Categories)
+	out, err := s.PutCategory(in.Category)
 	if err != nil {
 		err = er.WrapKindAndOp(err, er.KindInternalServerError, op)
 		return ctx.Status(er.ToHTTPStatus(err)).SendString(er.ToJSON(err))

@@ -25,45 +25,25 @@ func New(a *app.Application) *Service {
 }
 
 type In struct {
-	Categories []string
+	Category *model.Category
 }
 
 type Out struct {
+	Category *model.Category
 	Categories []*model.Category
 }
 
-func (s *Service) PutCategory(in []string) (*Out, error) {
+func (s *Service) PutCategory(mc *model.Category) (*Out, error) {
 	op := er.CallerOp()
-	var categories = make([]*model.Category, len(in))
 
-	err := s.App.ServiceDB.DB.Transaction(func(tx *gorm.DB) error {
-
-		//for i, _ := range keywords {
-		//	if i == (len(keywords) - 1) {
-		//		break
-		//	}
-		//	if i == 0 {
-		//		cat, err := categoryStore.AddCategoryIfNotExist(tx, keywords[i], keywords[i])
-		//		if err != nil {
-		//			return err
-		//		}
-		//		categories[i] = cat
-		//	}
-		//	cat, err := categoryStore.AddCategoryIfNotExist(tx, keywords[i+1], keywords[i])
-		//	if err != nil {
-		//		return err
-		//	}
-		//	categories[i+1] = cat
-		//}
-		return nil
-	})
+	mc.Status = model.StatusIdle
+	c, err := s.CategoryStore.AddCategory(mc)
 	if err != nil {
-		err := er.WrapOp(err, op)
-		return nil, err
+		return nil, er.WrapOp(err, op)
 	}
 
 	return &Out{
-		Categories: categories,
+		Category: c,
 	}, nil
 }
 
