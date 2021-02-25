@@ -58,7 +58,7 @@ func (s *Service) MustLoadDataAtLocal() error {
 			Sort: cat.Sort,
 			Depth: 1,
 		}
-		_, err = s.AddCategoryIfNotExist(mc)
+		_, err = s.InsertCategoryIfNotExist(mc)
 		if err != nil {
 			return er.WrapOp(err, op)
 		}
@@ -77,7 +77,7 @@ func (s *Service) MustLoadDataAtLocal() error {
 			Depth: 2,
 			Category1ID: c1,
 		}
-		_, err = s.AddCategoryIfNotExist(mc)
+		_, err = s.InsertCategoryIfNotExist(mc)
 		if err != nil {
 			return er.WrapOp(err, op)
 		}
@@ -97,7 +97,7 @@ func (s *Service) MustLoadDataAtLocal() error {
 			Category1ID: c1,
 			Category2ID: c2,
 		}
-		_, err = s.AddCategoryIfNotExist(mc)
+		_, err = s.InsertCategoryIfNotExist(mc)
 		if err != nil {
 			return er.WrapOp(err, op)
 		}

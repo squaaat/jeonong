@@ -19,13 +19,14 @@ func (s *Service) FiberHandlerPutCategory(ctx *fiber.Ctx) error {
 
 	out, err := s.PutCategory(in.Category)
 	if err != nil {
-		err = er.WrapKindAndOp(err, er.KindInternalServerError, op)
+		err = er.WrapOp(err, op)
+		err = er.WrapKindIfNotSet(err, er.KindInternalServerError)
 		return ctx.Status(er.ToHTTPStatus(err)).SendString(er.ToJSON(err))
 	}
 
 	b, err := jsoniter.Marshal(&out)
 	if err != nil {
-		err = er.WrapKindAndOp(err, er.KindInternalServerError, op)
+		err = er.WrapKindAndOp(err, er.KindFailJSONMarshaling, op)
 		return ctx.Status(er.ToHTTPStatus(err)).SendString(er.ToJSON(err))
 	}
 	ctx.Status(fiber.StatusOK)
@@ -38,17 +39,44 @@ func (s *Service) FiberHandlerGetCategories(ctx *fiber.Ctx) error {
 
 	out, err := s.GetCategories()
 	if err != nil {
-		err = er.WrapKindAndOp(err, er.KindInternalServerError, op)
+		err = er.WrapKindIfNotSet(er.WrapOp(err, op), er.KindInternalServerError)
 		return ctx.Status(er.ToHTTPStatus(err)).SendString(er.ToJSON(err))
 	}
 
 	b, err := jsoniter.Marshal(&out)
 	if err != nil {
-		err = er.WrapKindAndOp(err, er.KindInternalServerError, op)
+		err = er.WrapKindAndOp(err, er.KindFailJSONMarshaling, op)
 		return ctx.Status(er.ToHTTPStatus(err)).SendString(er.ToJSON(err))
 	}
 
 	ctx.Status(fiber.StatusOK)
 	return ctx.Send(b)
-
 }
+
+
+func (s *Service) FiberHandlerGetCategory(ctx *fiber.Ctx) error {
+	op := er.CallerOp()
+	ctx.Set(fiber.HeaderContentType, fiber.MIMEApplicationJSONCharsetUTF8)
+
+
+	id := ctx.Params("id")
+	if id == "" {
+		err := er.New("[id] path parameter is empty", er.KindBadRequest, op)
+		return ctx.Status(er.ToHTTPStatus(err)).SendString(er.ToJSON(err))
+	}
+	out, err := s.CategoryStore.GetCategory(id)
+	if err != nil {
+		err = er.WrapKindIfNotSet(er.WrapOp(err, op), er.KindInternalServerError)
+		return ctx.Status(er.ToHTTPStatus(err)).SendString(er.ToJSON(err))
+	}
+
+	b, err := jsoniter.Marshal(&out)
+	if err != nil {
+		err = er.WrapKindAndOp(err, er.KindFailJSONMarshaling, op)
+		return ctx.Status(er.ToHTTPStatus(err)).SendString(er.ToJSON(err))
+	}
+
+	ctx.Status(fiber.StatusOK)
+	return ctx.Send(b)
+}
+

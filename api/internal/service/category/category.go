@@ -1,11 +1,6 @@
 package category
 
 import (
-	"fmt"
-
-	"github.com/pkg/errors"
-	"gorm.io/gorm"
-
 	"github.com/squaaat/nearsfeed/api/internal/app"
 	"github.com/squaaat/nearsfeed/api/internal/er"
 	"github.com/squaaat/nearsfeed/api/internal/model"
@@ -37,7 +32,7 @@ func (s *Service) PutCategory(mc *model.Category) (*Out, error) {
 	op := er.CallerOp()
 
 	mc.Status = model.StatusIdle
-	c, err := s.CategoryStore.AddCategoryOnlyExist(mc)
+	c, err := s.CategoryStore.InsertCategoryOnlyExist(mc)
 	if err != nil {
 		return nil, er.WrapOp(err, op)
 	}
@@ -50,35 +45,11 @@ func (s *Service) PutCategory(mc *model.Category) (*Out, error) {
 func (s *Service) GetCategories() (*Out, error) {
 	op := er.CallerOp()
 
-	var categories []*model.Category
-	table := &model.Category{}
-	s.App.ServiceDB.DB.Name()
-	tx := s.App.ServiceDB.DB.
-		Model(table).
-		Joins("Keyword").
-		Joins("ParentKeyword").
-		Where(fmt.Sprintf("%s.status = 'IDLE'", table.TableName()))
-	if tx.Error != nil {
-		if !errors.Is(tx.Error, gorm.ErrRecordNotFound) {
-			return nil, er.WrapOp(tx.Error, op)
-		}
-	}
-	rows, err := tx.Rows()
-	defer rows.Close()
+	categories, err := s.CategoryStore.GetCategories()
 	if err != nil {
 		return nil, er.WrapOp(err, op)
-	}
-
-	for rows.Next() {
-		c := new(model.Category)
-		err = tx.ScanRows(rows, &c)
-		if err != nil {
-			return nil, er.WrapOp(err, op)
-		}
-		categories = append(categories, c)
 	}
 	return &Out{
 		Categories: categories,
 	}, nil
-
 }

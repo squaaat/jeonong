@@ -23,6 +23,12 @@ Content-Type: application/json
 GET http://localhost:4000/api/categories
 Content-Type: application/json
 
+### get category
+GET http://localhost:4000/api/categories/1d93c7e1-5c77-44b9-b6ab-f192c9ab35a1
+Content-Type: application/json
+
+
+
 ### put manufacture
 PUT http://localhost:4000/api/manufactures
 Content-Type: application/json

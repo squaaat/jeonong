@@ -27,7 +27,7 @@ func New(a *app.Application) *fiber.App {
 	})
 	f.Put("/api/categories", categoryService.FiberHandlerPutCategory)
 	f.Get("/api/categories", categoryService.FiberHandlerGetCategories)
-
+	f.Get("/api/categories/:id", categoryService.FiberHandlerGetCategory)
 	manufactureService := manSrv.New(a)
 	f.Put("/api/manufactures", manufactureService.FiberHandlerPutManufacture)
 	f.Get("/api/manufactures", manufactureService.FiberHandlerGetManufactures)

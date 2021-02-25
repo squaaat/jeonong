@@ -16,6 +16,7 @@ type Kind int
 const (
 	KindUndefined Kind = iota
 	KindBadRequest
+	KindNotFound
 	KindInternalServerError
 	KindForbidden
 	KindIgnorable
@@ -27,6 +28,7 @@ var (
 	KindAndHTTPStatusMap = map[Kind]int{
 		KindUndefined:           fiber.StatusInternalServerError,
 		KindBadRequest:          fiber.StatusBadRequest,
+		KindNotFound: fiber.StatusNotFound,
 		KindInternalServerError: fiber.StatusInternalServerError,
 		KindFailJSONMarshaling:  fiber.StatusInternalServerError,
 		KindDubplicated:         fiber.StatusBadRequest,
