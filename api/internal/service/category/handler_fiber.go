@@ -53,18 +53,16 @@ func (s *Service) FiberHandlerGetCategories(ctx *fiber.Ctx) error {
 	return ctx.Send(b)
 }
 
-
 func (s *Service) FiberHandlerGetCategory(ctx *fiber.Ctx) error {
 	op := er.CallerOp()
 	ctx.Set(fiber.HeaderContentType, fiber.MIMEApplicationJSONCharsetUTF8)
-
 
 	id := ctx.Params("id")
 	if id == "" {
 		err := er.New("[id] path parameter is empty", er.KindBadRequest, op)
 		return ctx.Status(er.ToHTTPStatus(err)).SendString(er.ToJSON(err))
 	}
-	out, err := s.CategoryStore.GetCategory(id)
+	out, err := s.GetCategory(id)
 	if err != nil {
 		err = er.WrapKindIfNotSet(er.WrapOp(err, op), er.KindInternalServerError)
 		return ctx.Status(er.ToHTTPStatus(err)).SendString(er.ToJSON(err))
@@ -79,4 +77,3 @@ func (s *Service) FiberHandlerGetCategory(ctx *fiber.Ctx) error {
 	ctx.Status(fiber.StatusOK)
 	return ctx.Send(b)
 }
-

@@ -13,7 +13,6 @@ import (
 	serverhttp "github.com/squaaat/nearsfeed/api/internal/server/http"
 )
 
-
 func main() {
 	cfg := config.MustInit(os.Getenv("J_ENV"), false)
 	app := app.New(cfg)
@@ -21,7 +20,7 @@ func main() {
 
 	lambdaApp := adapter.New(http)
 
-	lambda.Start(func (ctx context.Context, req events.APIGatewayProxyRequest) (events.APIGatewayProxyResponse, error) {
+	lambda.Start(func(ctx context.Context, req events.APIGatewayProxyRequest) (events.APIGatewayProxyResponse, error) {
 		return lambdaApp.ProxyWithContext(ctx, req)
 	})
 }

@@ -43,8 +43,8 @@ func MustLoadDataAtLocal() (*DataManufactures, error) {
 
 func AddManufactureIfNotExist(tx *gorm.DB, m *Manufacture) (*model.Manufacture, error) {
 	man := &model.Manufacture{
-		Name: m.Name,
-		Code: m.Code,
+		Name:                      m.Name,
+		Code:                      m.Code,
 		CompanyRegistrationNumber: m.CompanyRegistrationNumber,
 		DefaultModel: model.DefaultModel{
 			Status: model.StatusIdle,

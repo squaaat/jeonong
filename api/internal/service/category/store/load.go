@@ -52,11 +52,11 @@ func (s *Service) MustLoadDataAtLocal() error {
 
 	for _, cat := range data.Depth1 {
 		mc := &model.Category{
-			Name: cat.Name,
-			Code: cat.Code,
+			Name:   cat.Name,
+			Code:   cat.Code,
 			Status: model.StatusIdle,
-			Sort: cat.Sort,
-			Depth: 1,
+			Sort:   cat.Sort,
+			Depth:  1,
 		}
 		_, err = s.InsertCategoryIfNotExist(mc)
 		if err != nil {
@@ -70,11 +70,11 @@ func (s *Service) MustLoadDataAtLocal() error {
 		}
 
 		mc := &model.Category{
-			Name: cat.Name,
-			Code: cat.Code,
-			Status: model.StatusIdle,
-			Sort: cat.Sort,
-			Depth: 2,
+			Name:        cat.Name,
+			Code:        cat.Code,
+			Status:      model.StatusIdle,
+			Sort:        cat.Sort,
+			Depth:       2,
 			Category1ID: c1,
 		}
 		_, err = s.InsertCategoryIfNotExist(mc)
@@ -89,11 +89,11 @@ func (s *Service) MustLoadDataAtLocal() error {
 		}
 
 		mc := &model.Category{
-			Name: cat.Name,
-			Code: cat.Code,
-			Status: model.StatusIdle,
-			Sort: cat.Sort,
-			Depth: 3,
+			Name:        cat.Name,
+			Code:        cat.Code,
+			Status:      model.StatusIdle,
+			Sort:        cat.Sort,
+			Depth:       3,
 			Category1ID: c1,
 			Category2ID: c2,
 		}

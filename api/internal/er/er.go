@@ -28,7 +28,7 @@ var (
 	KindAndHTTPStatusMap = map[Kind]int{
 		KindUndefined:           fiber.StatusInternalServerError,
 		KindBadRequest:          fiber.StatusBadRequest,
-		KindNotFound: fiber.StatusNotFound,
+		KindNotFound:            fiber.StatusNotFound,
 		KindInternalServerError: fiber.StatusInternalServerError,
 		KindFailJSONMarshaling:  fiber.StatusInternalServerError,
 		KindDubplicated:         fiber.StatusBadRequest,

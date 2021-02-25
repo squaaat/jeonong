@@ -24,7 +24,7 @@ type In struct {
 }
 
 type Out struct {
-	Category *model.Category
+	Category   *model.Category
 	Categories []*model.Category
 }
 
@@ -45,11 +45,23 @@ func (s *Service) PutCategory(mc *model.Category) (*Out, error) {
 func (s *Service) GetCategories() (*Out, error) {
 	op := er.CallerOp()
 
-	categories, err := s.CategoryStore.GetCategories()
+	categories, err := s.CategoryStore.SelectCategory()
 	if err != nil {
 		return nil, er.WrapOp(err, op)
 	}
 	return &Out{
 		Categories: categories,
+	}, nil
+}
+
+func (s *Service) GetCategory(id string) (*Out, error) {
+	op := er.CallerOp()
+
+	c, err := s.CategoryStore.SelectOneCategory(id)
+	if err != nil {
+		return nil, er.WrapOp(err, op)
+	}
+	return &Out{
+		Category: c,
 	}, nil
 }

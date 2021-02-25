@@ -11,7 +11,6 @@ import (
 	"github.com/squaaat/nearsfeed/api/internal/model"
 )
 
-
 type CategoryNames struct {
 	Category1Name string `sql:"category1_name"`
 	Category2Name string `sql:"category2_name"`
@@ -37,7 +36,7 @@ func (s *Service) categoryIDsByCode(code string) (string, string, string, string
 	return c.Category1ID, c.Category2ID, c.Category3ID, c.Category4ID, nil
 }
 
-func (s *Service) categoryFullNameIds(depth int64, cat1, cat2, cat3, cat4 string) (string, error){
+func (s *Service) categoryFullNameIds(depth int64, cat1, cat2, cat3, cat4 string) (string, error) {
 	op := er.CallerOp()
 
 	if err := checkCategoryValid(depth, cat1, cat2, cat3, cat4); err != nil {
@@ -100,8 +99,7 @@ SELECT
 	return strings.Join(fullName, ","), nil
 }
 
-
-func GetCategoryByModel(tx *gorm.DB, mc *model.Category) (* model.Category, error) {
+func GetCategoryByModel(tx *gorm.DB, mc *model.Category) (*model.Category, error) {
 	op := er.CallerOp()
 
 	c := &model.Category{}
@@ -137,7 +135,7 @@ AND (
 
 func checkCategoryValid(depth int64, cat1, cat2, cat3, cat4 string) error {
 	if depth == 1 {
-		if cat2 != "" || cat3 != "" ||  cat4 != "" {
+		if cat2 != "" || cat3 != "" || cat4 != "" {
 			return errors.New("Depth is 1, But, Category2ID, Category3ID or Category4ID is not empty")
 		}
 	}
@@ -145,7 +143,7 @@ func checkCategoryValid(depth int64, cat1, cat2, cat3, cat4 string) error {
 		if cat1 == "" {
 			return errors.New("Depth is 2, But, Category1ID is empty")
 		}
-		if cat3 != "" ||  cat4 != "" {
+		if cat3 != "" || cat4 != "" {
 			return errors.New("Depth is 2, But, Category3ID, Category4ID is not empty")
 		}
 	}

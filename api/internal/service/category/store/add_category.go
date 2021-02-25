@@ -37,7 +37,7 @@ func (s *Service) InsertCategory(mc *model.Category) (*model.Category, error) {
 		return nil, er.WrapOp(subTx.Error, op)
 	}
 	if subTx.RowsAffected != 1 {
-		return nil, er.New("failed create category", er.KindInternalServerError,op)
+		return nil, er.New("failed create category", er.KindInternalServerError, op)
 	}
 
 	fullName, err := s.categoryFullNameIds(mc.Depth, mc.Category1ID, mc.Category2ID, mc.Category3ID, mc.Category4ID)
@@ -53,7 +53,7 @@ func (s *Service) InsertCategory(mc *model.Category) (*model.Category, error) {
 		return nil, subTx.Error
 	}
 	if subTx.RowsAffected != 1 {
-		return nil, er.New("failed update 'full_name' a category", er.KindInternalServerError,op)
+		return nil, er.New("failed update 'full_name' a category", er.KindInternalServerError, op)
 	}
 
 	return mc, nil

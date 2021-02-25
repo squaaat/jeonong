@@ -8,7 +8,7 @@ import (
 	"github.com/squaaat/nearsfeed/api/internal/model"
 )
 
-func (s *Service) GetCategories() ([]*model.Category, error) {
+func (s *Service) SelectCategory() ([]*model.Category, error) {
 	op := er.CallerOp()
 
 	var categories []*model.Category
