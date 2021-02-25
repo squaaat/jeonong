@@ -20,6 +20,7 @@ const (
 	KindForbidden
 	KindIgnorable
 	KindFailJSONMarshaling
+	KindDubplicated
 )
 
 var (
@@ -28,6 +29,7 @@ var (
 		KindBadRequest:          fiber.StatusBadRequest,
 		KindInternalServerError: fiber.StatusInternalServerError,
 		KindFailJSONMarshaling:  fiber.StatusInternalServerError,
+		KindDubplicated:         fiber.StatusBadRequest,
 		KindForbidden:           fiber.StatusForbidden,
 	}
 )

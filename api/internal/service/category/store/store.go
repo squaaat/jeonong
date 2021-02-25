@@ -72,11 +72,12 @@ func (s *Service) AddCategory(mc *model.Category) (*model.Category, error) {
 	return mc, nil
 }
 
-func (s *Service) AddCategoryIfNotExist(mc *model.Category) (*model.Category, error) {
+
+func GetCategoryByModel(tx *gorm.DB, mc *model.Category) (* model.Category, error) {
 	op := er.CallerOp()
 
 	c := &model.Category{}
-	tx := s.App.ServiceDB.DB.
+	subTx := tx.
 		Model(c).
 		Where(`
 depth = ?
@@ -90,25 +91,45 @@ AND (
 		ELSE 1 = 1
 	END
 )`,
-mc.Depth, mc.Code, mc.Name,
-mc.Category1ID,
-mc.Category1ID, mc.Category2ID,
-mc.Category1ID, mc.Category2ID, mc.Category3ID).
+			mc.Depth, mc.Code, mc.Name,
+			mc.Category1ID,
+			mc.Category1ID, mc.Category2ID,
+			mc.Category1ID, mc.Category2ID, mc.Category3ID).
 		Scan(c)
 
-	if tx.Error != nil {
-		if !errors.Is(tx.Error, gorm.ErrRecordNotFound) {
-			return nil, er.WrapOp(tx.Error, op)
+	if subTx.Error != nil {
+		if !errors.Is(subTx.Error, gorm.ErrRecordNotFound) {
+			return nil, er.WrapOp(subTx.Error, op)
 		}
 	}
-
-	if c.ID != "" {
-		return c, nil
-	}
-
-	return s.AddCategory(mc)
+	return c, nil
 }
 
+func (s *Service) AddCategoryIfNotExist(mc *model.Category) (*model.Category, error) {
+	op := er.CallerOp()
+
+	if c, err := GetCategoryByModel(s.App.ServiceDB.DB, mc); err != nil {
+		return nil, er.WrapOp(err, op)
+	} else {
+		if c.ID != "" {
+			return s.AddCategory(c)
+		}
+		return s.AddCategory(mc)
+	}
+}
+
+func (s *Service) AddCategoryOnlyExist(mc *model.Category) (*model.Category, error) {
+	op := er.CallerOp()
+
+	if c, err := GetCategoryByModel(s.App.ServiceDB.DB, mc); err != nil {
+		return nil, er.WrapOp(err, op)
+	} else {
+		if c.ID != "" {
+			return nil, er.New(fmt.Sprintf("[name=%s, code=%s, depth=%d] is already exists. plz check", c.Name, c.Code, c.Depth), er.KindDubplicated, op)
+		}
+		return s.AddCategory(mc)
+	}
+}
 
 type CategoryNames struct {
 	Category1Name string `sql:"category1_name"`
