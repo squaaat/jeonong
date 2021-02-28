@@ -13,7 +13,7 @@ const layout = {
   wrapperCol: { span: 18 },
 };
 
-type RequiredMark = boolean | 'optional';
+// type RequiredMark = boolean | 'optional';
 
 
 const depthDefaultValue = _const.CategoryDepth.Value.depth2
@@ -33,13 +33,11 @@ const CategoryManager: FC<CategoryManagerProps> = () => {
   //   })
   // }, [])
 
-  const [form] = Form.useForm();
-  const [requiredMark, setRequiredMarkType] = useState<RequiredMark>('optional');
-
-  const onRequiredTypeChange = ({ requiredMarkValue }: { requiredMarkValue: RequiredMark }) => {
-    setRequiredMarkType(requiredMarkValue);
-  };
-
+  // const [form] = Form.useForm();
+  // const [requiredMark, setRequiredMarkType] = useState<RequiredMark>('optional');
+  // const onRequiredTypeChange = ({ requiredMarkValue }: { requiredMarkValue: RequiredMark }) => {
+  //   setRequiredMarkType(requiredMarkValue);
+  // };
   // console.log(form)
   // console.log(requiredMark)
 
@@ -73,9 +71,9 @@ const CategoryManager: FC<CategoryManagerProps> = () => {
         name="basic"
         initialValues={{ remember: true }}
         onFinish={onCategorySubmit}
-        onValuesChange={onRequiredTypeChange}
         onFinishFailed={onCategorySubmitFailed}
-      >
+        // onValuesChange={onRequiredTypeChange}
+        >
         <Form.Item
           label="name"
           name="name"
@@ -93,7 +91,7 @@ const CategoryManager: FC<CategoryManagerProps> = () => {
           name="depth"
         >
           <Radio.Group
-            initialValues={depthDefaultValue}
+            defaultValue={depthDefaultValue}
             onChange={(e) => {
               setSelectedDepth(e.target.value)
             }}

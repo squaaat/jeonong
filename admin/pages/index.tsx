@@ -91,9 +91,6 @@ const IndexPage:FC<PageProps> = ({ session }) => {
                     onFocus={(...rest) => console.log('onFocus', ...rest)}
                     onBlur={(...rest) => console.log('onBlur', ...rest)}
                     onSearch={(...rest) => console.log('onSearch', ...rest)}
-                    filterOption={(input, option) =>
-                      option.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
-                    }
                   >
                     <Select.Option key={0} value="jack">뚜레주루</Select.Option>
                     <Select.Option key={1} value="lucy">뚜벅이</Select.Option>
