@@ -9,3 +9,5 @@ export J_CICD=false
 
 export GOOGLE_OAUTH_CLIENT_ID=
 export GOOGLE_OAUTH_CLIENT_SECRET=
+
+export ADMIN_AWS_ACM_ARN=

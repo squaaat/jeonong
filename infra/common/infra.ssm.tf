@@ -6,7 +6,7 @@ resource "aws_ssm_parameter" "aws_route_53_nearsfeed_com_zone_id" {
 }
 
 
-// ------
+// ------ ap-northeast-2
 resource "aws_ssm_parameter" "aws_acm_certificate_nearsfeed_com_domain" {
   name      = "/nearsfeed/infra/aws_acm_certificate/nearsfeed.com/domain"
   type      = "String"

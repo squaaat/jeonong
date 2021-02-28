@@ -63,11 +63,11 @@ provider:
 package:
   exclude:
     - ./**
-#  exclude:
-#    - serverless.yml
-#    - .idea
-#    - .serverless
-#    - .gitignore
+  #  exclude:
+  #    - serverless.yml
+  #    - .idea
+  #    - .serverless
+  #    - .gitignore
   include:
     - ./bin/**
 
@@ -83,7 +83,7 @@ custom:
   customDomain:
     domainName: "api.alpha.nearsfeed.com"
     basePath: ""
-    hostedZoneId: ${ssm:/nearsfeed/infra/aws_route_53/nearsfeed.com/zone_id~true}
+    hostedZoneId: ${ssm.ap-northeast-2:/nearsfeed/infra/aws_route_53/nearsfeed.com/zone_id~true}
     stage: ${self:provider.stage}
     createRoute53Record: true
-    certificateName: ${ssm:/nearsfeed/infra/aws_acm_certificate/nearsfeed.com/domain~true}
+    certificateName: ${ssm.ap-northeast-2:/nearsfeed/infra/aws_acm_certificate/nearsfeed.com/domain~true}
