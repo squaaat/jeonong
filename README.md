@@ -6,6 +6,16 @@
 - 전농동 대장아파트 34평 기준 18억 미친거아닙니까. 옛날엔 그 지역 주택 1~2억이었는데..
 - 뭔지 일단 안알려줄꺼지롱
 
+# Getting start
+
+```bash
+vi .envrc # at ~~/blah/foo/bar/nearsfeed # or call drakejin
+direnv allow
+
+# add security group member
+./scripts/add.sg.myip.sh drakejin
+```
+
 # Scripts
 
 ### secrets 환경변수
