@@ -2,16 +2,10 @@ import { FC } from 'react'
 import DefaultLayout from 'components/DefaultLayout'
 import { PageHeader, Descriptions, Row, Col, Card, Layout, Form, Select } from 'antd';
 import { Session, MockSession } from 'models/Session'
-import { Category, GetCategories} from 'models/Category'
-
+import CategoryManager from 'components/CategoryManager'
 
 type PageProps = {
   session: Session;
-  categoryManagement: CategoryManagement;
-}
-
-type CategoryManagement = {
-  selectBox: Category[]
 }
 
 type ServerProps = {
@@ -27,13 +21,6 @@ const layout = {
 
 const IndexPage:FC<PageProps> = ({ session }) => {
 
-  const onManufactureSubmit = (values: any) => {
-    console.log('Success:', values);
-  };
-
-  const onManufactureSubmitFailed = (errorInfo: any) => {
-    console.log('Failed:', errorInfo);
-  };
 
   const onCategorySubmit = (values: any) => {
     console.log('Success:', values);
@@ -72,72 +59,12 @@ const IndexPage:FC<PageProps> = ({ session }) => {
           style={{ marginBottom: '0.5rem'}}
         >
           <Col span={12}>
-            <Card title="제조사 관리">
-              <Form
-                {...layout}
-                name="basic"
-                initialValues={{ remember: true }}
-                onFinish={onManufactureSubmit}
-                onFinishFailed={onManufactureSubmitFailed}
-              >
-                <Form.Item
-                  label="manufacture"
-                  name="manufacture"
-                  rules={[{ required: true, message: 'Please input your manufacture!' }]}
-                >
-                  <Select
-                    showSearch
-                    placeholder="type a manufacture"
-                    optionFilterProp="children"
-                    onChange={(...rest) => console.log('manufacture.onChange', ...rest)}
-                    onFocus={(...rest) => console.log('manufacture.onFocus', ...rest)}
-                    onBlur={(...rest) => console.log('manufacture.onBlur', ...rest)}
-                    onSearch={(...rest) => console.log('manufacture.onSearch', ...rest)}
-                    filterOption={(input, option) =>
-                      option.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
-                    }
-                  >
-                    <Select.Option key={0} value="jack">뚜레주루</Select.Option>
-                    <Select.Option key={1} value="lucy">뚜벅이</Select.Option>
-                    <Select.Option key={2} value="tom">또라이</Select.Option>
-                  </Select>
-                </Form.Item>
-              </Form>
-            </Card>
+            <CategoryManager
+            />
           </Col>
           <Col span={12}>
-            <Card title="카테고리 관리">
-              <Form
-                {...layout}
-                name="basic"
-                initialValues={{ remember: true }}
-                onFinish={onCategorySubmit}
-                onFinishFailed={onCategorySubmitFailed}
-              >
-                <Form.Item
-                  label="category"
-                  name="category"
-                  rules={[{ required: true, message: 'Please input your category!' }]}
-                >
-                  <Select
-                    showSearch
-                    placeholder="type a category"
-                    optionFilterProp="children"
-                    onChange={(...rest) => console.log('category.onChange', ...rest)}
-                    onFocus={(...rest) => console.log('category.onFocus', ...rest)}
-                    onBlur={(...rest) => console.log('category.onBlur', ...rest)}
-                    onSearch={(...rest) => console.log('category.onSearch', ...rest)}
-                    filterOption={(input, option) =>
-                      option.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
-                    }
-                  >
-                    <Select.Option key={0} value="jack">뚜레주루</Select.Option>
-                    <Select.Option key={1} value="lucy">뚜벅이</Select.Option>
-                    <Select.Option key={2} value="tom">또라이</Select.Option>
-                  </Select>
-                </Form.Item>
-              </Form>
-            </Card>
+            <CategoryManager
+              />
           </Col>
         </Row>
         <Row
@@ -186,12 +113,8 @@ const IndexPage:FC<PageProps> = ({ session }) => {
 
 // This function gets called at build time
 export async function getStaticProps() {
-  const categoriesSelectBox = await GetCategories()
   const data: ServerProps = {
     props: {
-      categoryManagement: {
-        selectBox: categoriesSelectBox,
-      },
       session: MockSession,
     }
   }

@@ -1,7 +1,6 @@
 import { FC, useState, ReactNode } from 'react'
 import Head from 'next/head'
 import styled from 'styled-components'
-import { useRouter } from 'next/router'
 import { Session } from 'models/Session'
 
 import { Layout, Menu, Breadcrumb } from 'antd';
@@ -21,7 +20,6 @@ type Props = {
 }
 
 const DefaultLayout: FC<Props> = ({ title, children, session }) => {
-  const router = useRouter()
   const [isCollapsed, onCollapsed] = useState(false)
   return (
     <Layout style={{ minHeight: '100vh' }}>
