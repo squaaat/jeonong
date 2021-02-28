@@ -63,8 +63,7 @@ const IndexPage:FC<PageProps> = ({ session }) => {
             />
           </Col>
           <Col span={12}>
-            <CategoryManager
-              />
+            "dd"
           </Col>
         </Row>
         <Row
