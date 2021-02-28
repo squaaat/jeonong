@@ -1,11 +1,6 @@
 package manufacture
 
 import (
-	"fmt"
-
-	"github.com/pkg/errors"
-	"gorm.io/gorm"
-
 	"github.com/squaaat/nearsfeed/api/internal/app"
 	"github.com/squaaat/nearsfeed/api/internal/er"
 	"github.com/squaaat/nearsfeed/api/internal/model"
@@ -13,19 +8,19 @@ import (
 )
 
 type Service struct {
-	App           *app.Application
-	CategoryStore *manufactureStore.Service
+	App              *app.Application
+	ManufactureStore *manufactureStore.Service
 }
 
 func New(a *app.Application) *Service {
 	return &Service{
-		App:           a,
-		CategoryStore: manufactureStore.New(a),
+		App:              a,
+		ManufactureStore: manufactureStore.New(a),
 	}
 }
 
 type In struct {
-	Manufacture string
+	Manufacture *model.Manufacture
 }
 
 type Out struct {
@@ -33,27 +28,15 @@ type Out struct {
 	Manufacture  *model.Manufacture
 }
 
-func (s *Service) PutManufacture(name string) (*Out, error) {
+func (s *Service) PutManufacture(m *model.Manufacture) (*Out, error) {
 	op := er.CallerOp()
-	var manufacture *model.Manufacture
 
-	err := s.App.ServiceDB.DB.Transaction(func(tx *gorm.DB) error {
-		m, err := manufactureStore.AddManufactureIfNotExist(tx, &manufactureStore.Manufacture{
-			Name: name,
-		})
-		if err != nil {
-			return err
-		}
-		manufacture = m
-		return nil
-	})
+	man, err := s.ManufactureStore.InsertManufactureOnlyNotExist(m)
 	if err != nil {
-		err := er.WrapOp(err, op)
-		return nil, err
+		return nil, er.WrapOp(err, op)
 	}
-
 	return &Out{
-		Manufacture: manufacture,
+		Manufacture: man,
 	}, nil
 }
 
@@ -61,32 +44,26 @@ func (s *Service) GetManufactures() (*Out, error) {
 	op := er.CallerOp()
 
 	var manufactures []*model.Manufacture
-	table := &model.Manufacture{}
-	s.App.ServiceDB.DB.Name()
-	tx := s.App.ServiceDB.DB.
-		Model(table).
-		Joins("Keyword").
-		Where(fmt.Sprintf("%s.status = 'IDLE'", table.TableName()))
-	if tx.Error != nil {
-		if !errors.Is(tx.Error, gorm.ErrRecordNotFound) {
-			return nil, er.WrapOp(tx.Error, op)
-		}
-	}
-	rows, err := tx.Rows()
-	defer rows.Close()
+
+	manufactures, err := s.ManufactureStore.SelectManufactures()
 	if err != nil {
 		return nil, er.WrapOp(err, op)
 	}
 
-	for rows.Next() {
-		m := new(model.Manufacture)
-		err = tx.ScanRows(rows, &m)
-		if err != nil {
-			return nil, er.WrapOp(err, op)
-		}
-		manufactures = append(manufactures, m)
-	}
 	return &Out{
 		Manufactures: manufactures,
+	}, nil
+}
+
+func (s *Service) GetManufacture(id string) (*Out, error) {
+	op := er.CallerOp()
+
+	man, err := s.ManufactureStore.SelectOneManufacture(id)
+	if err != nil {
+		return nil, er.WrapOp(err, op)
+	}
+
+	return &Out{
+		Manufacture: man,
 	}, nil
 }

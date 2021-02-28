@@ -124,11 +124,7 @@ AND (
 		Scan(c)
 
 	if subTx.Error != nil {
-		if errors.Is(subTx.Error, gorm.ErrRecordNotFound) {
-			return c, nil
-		} else {
-			return nil, er.WrapOp(subTx.Error, op)
-		}
+		return nil, er.WrapOp(subTx.Error, op)
 	}
 	return c, nil
 }

@@ -50,5 +50,26 @@ func (s *Service) FiberHandlerGetManufactures(ctx *fiber.Ctx) error {
 
 	ctx.Status(fiber.StatusOK)
 	return ctx.Send(b)
+}
 
+
+func (s *Service) FiberHandlerGetManufacture(ctx *fiber.Ctx) error {
+	op := er.CallerOp()
+	ctx.Set(fiber.HeaderContentType, fiber.MIMEApplicationJSONCharsetUTF8)
+
+	id := ctx.Params("id")
+	out, err := s.GetManufacture(id)
+	if err != nil {
+		err = er.WrapKindAndOp(err, er.KindInternalServerError, op)
+		return ctx.Status(er.ToHTTPStatus(err)).SendString(er.ToJSON(err))
+	}
+
+	b, err := jsoniter.Marshal(&out)
+	if err != nil {
+		err = er.WrapKindAndOp(err, er.KindInternalServerError, op)
+		return ctx.Status(er.ToHTTPStatus(err)).SendString(er.ToJSON(err))
+	}
+
+	ctx.Status(fiber.StatusOK)
+	return ctx.Send(b)
 }

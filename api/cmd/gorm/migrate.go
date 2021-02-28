@@ -53,8 +53,8 @@ func newGormMigrateSync() *cobra.Command {
 		if err != nil {
 			fmt.Println(err.Error())
 		}
-		manStore := manufactureStore.New(a)
 
+		manStore := manufactureStore.New(a)
 		err = manStore.MustLoadDataAtLocal()
 		if err != nil {
 			fmt.Println(err.Error())

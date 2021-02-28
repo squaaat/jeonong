@@ -8,8 +8,8 @@ Content-Type: application/json
 
 {
   "Category": {
-    "Name": "테스트1",
-    "Code": "test1",
+    "Name": "테스트2",
+    "Code": "test2",
     "Depth": 1,
     "Sort": 2,
     "Category1ID": "",
@@ -24,7 +24,7 @@ GET http://localhost:4000/api/categories
 Content-Type: application/json
 
 ### get category
-GET http://localhost:4000/api/categories/1d93c7e1-5c77-44b9-b6ab-f192c9ab35a1
+GET http://localhost:4000/api/categories/50eda37c-e757-4224-9f22-23acb2c04558
 Content-Type: application/json
 
 
@@ -34,7 +34,11 @@ PUT http://localhost:4000/api/manufactures
 Content-Type: application/json
 
 {
-  "Manufacture": "test1"
+  "Manufacture": {
+    "Name": "테스트1",
+    "Code": "test1",
+    "CompanyRegistrationNumber": "123-123123-123123"
+  }
 }
 
 ### get manufactures
@@ -43,6 +47,6 @@ Content-Type: application/json
 
 
 ### get manufactures
-GET http://localhost:4000/health
-
+GET http://localhost:4000/api/manufactures/208eabd7-0a84-4b4b-9a47-d35fb31f3d99
+Content-Type: application/json
 

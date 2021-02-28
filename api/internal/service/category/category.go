@@ -32,7 +32,7 @@ func (s *Service) PutCategory(mc *model.Category) (*Out, error) {
 	op := er.CallerOp()
 
 	mc.Status = model.StatusIdle
-	c, err := s.CategoryStore.InsertCategoryOnlyExist(mc)
+	c, err := s.CategoryStore.InsertCategoryOnlyNotExist(mc)
 	if err != nil {
 		return nil, er.WrapOp(err, op)
 	}

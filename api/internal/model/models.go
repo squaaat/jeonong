@@ -61,8 +61,8 @@ type Category struct {
 	Status   EnumStatus `gorm:"type:ENUM('WAIT','IDLE','INVALID','DELETED');default:'WAIT';index:category1ID_and_status,category2ID_and_status,category3ID_and_status,category4ID_and_status"`
 	Sort     int64
 	Depth    int64
-	Code     string
-	Name     string
+	Code     string `gorm:"type:VARCHAR(100);index_name_and_code"`
+	Name     string `gorm:"type:VARCHAR(100);index_name_and_code"`
 	FullName string
 }
 
@@ -73,9 +73,9 @@ func (m *Category) TableName() string {
 type Manufacture struct {
 	DefaultModel
 
-	Code                      string
-	Name                      string
-	CompanyRegistrationNumber string `gorm:"type:VARCHAR(100)"`
+	Code                      string `gorm:"type:VARCHAR(100);index_name_and_code"`
+	Name                      string `gorm:"type:VARCHAR(100);index_name_and_code"`
+	CompanyRegistrationNumber string `gorm:"type:VARCHAR(100);index"`
 }
 
 func (m *Manufacture) TableName() string {

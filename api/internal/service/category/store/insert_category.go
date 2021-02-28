@@ -1,8 +1,6 @@
 package store
 
 import (
-	"fmt"
-
 	"github.com/google/uuid"
 	"github.com/pkg/errors"
 	"gorm.io/gorm"
@@ -11,7 +9,7 @@ import (
 	"github.com/squaaat/nearsfeed/api/internal/model"
 )
 
-func (s *Service) InsertCategory(mc *model.Category) (*model.Category, error) {
+func (s *Service) insertCategory(mc *model.Category) (*model.Category, error) {
 	op := er.CallerOp()
 
 	if err := checkCategoryValid(mc.Depth, mc.Category1ID, mc.Category2ID, mc.Category3ID, mc.Category4ID); err != nil {
@@ -32,11 +30,11 @@ func (s *Service) InsertCategory(mc *model.Category) (*model.Category, error) {
 		mc.Category4ID = mc.ID
 	}
 
-	subTx := s.App.ServiceDB.DB.Create(mc)
-	if subTx.Error != nil {
-		return nil, er.WrapOp(subTx.Error, op)
+	tx := s.App.ServiceDB.DB.Create(mc).Scan(mc)
+	if tx.Error != nil {
+		return nil, er.WrapOp(tx.Error, op)
 	}
-	if subTx.RowsAffected != 1 {
+	if tx.RowsAffected != 1 {
 		return nil, er.New("failed create category", er.KindInternalServerError, op)
 	}
 
@@ -45,42 +43,62 @@ func (s *Service) InsertCategory(mc *model.Category) (*model.Category, error) {
 		return nil, err
 	}
 
-	subTx = s.App.ServiceDB.DB.Model(mc).Update("full_name", fullName).Where("id = ?", mc.ID)
-	if subTx.Error != nil {
-		if !errors.Is(subTx.Error, gorm.ErrRecordNotFound) {
-			return nil, er.WrapOp(subTx.Error, op)
+	tx = s.App.ServiceDB.DB.Model(mc).Update("full_name", fullName).Where("id = ?", mc.ID)
+	if tx.Error != nil {
+		if !errors.Is(tx.Error, gorm.ErrRecordNotFound) {
+			return nil, er.WrapOp(tx.Error, op)
 		}
-		return nil, subTx.Error
+		return nil, tx.Error
 	}
-	if subTx.RowsAffected != 1 {
+	if tx.RowsAffected != 1 {
 		return nil, er.New("failed update 'full_name' a category", er.KindInternalServerError, op)
 	}
 
 	return mc, nil
 }
 
-func (s *Service) InsertCategoryIfNotExist(mc *model.Category) (*model.Category, error) {
+func (s *Service) InsertCategoryIfNotExist(c *model.Category) (*model.Category, error) {
 	op := er.CallerOp()
 
-	if c, err := GetCategoryByModel(s.App.ServiceDB.DB, mc); err != nil {
-		return nil, er.WrapOp(err, op)
-	} else {
-		if c.ID != "" {
-			return s.InsertCategory(c)
+	subCat, err := GetCategoryByModel(s.App.ServiceDB.DB, c)
+	if err != nil {
+		if er.Is(err, gorm.ErrRecordNotFound) {
+			subCat, err = s.insertCategory(c)
+			if err != nil {
+				return nil, er.WrapOp(err, op)
+			}
+			return subCat, nil
 		}
-		return s.InsertCategory(mc)
+		return nil, er.WrapOp(err, op)
 	}
+	subCat, err = s.insertCategory(c)
+	if err != nil {
+		return nil, er.WrapOp(err, op)
+	}
+	return subCat, nil
 }
 
-func (s *Service) InsertCategoryOnlyExist(mc *model.Category) (*model.Category, error) {
+func (s *Service) InsertCategoryOnlyNotExist(c *model.Category) (*model.Category, error) {
 	op := er.CallerOp()
 
-	if c, err := GetCategoryByModel(s.App.ServiceDB.DB, mc); err != nil {
-		return nil, er.WrapOp(err, op)
-	} else {
-		if c.ID != "" {
-			return nil, er.New(fmt.Sprintf("[name=%s, code=%s, depth=%d] is already exists. plz check", c.Name, c.Code, c.Depth), er.KindDubplicated, op)
+	subCat, err := GetCategoryByModel(s.App.ServiceDB.DB, c)
+	if err != nil {
+		if er.Is(err, gorm.ErrRecordNotFound) {
+			subCat, err := s.insertCategory(c)
+			if err != nil {
+				return nil, er.WrapOp(err, op)
+			}
+			return subCat, nil
 		}
-		return s.InsertCategory(mc)
+		return nil, er.WrapOp(err, op)
+	}
+	if subCat.ID == "" {
+		subCat, err := s.insertCategory(c)
+		if err != nil {
+			return nil, er.WrapOp(err, op)
+		}
+		return subCat, nil
+	} else {
+		return nil, er.New("code, name is already exist", er.KindDubplicated, op)
 	}
 }

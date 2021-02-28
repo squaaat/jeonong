@@ -31,6 +31,7 @@ func New(a *app.Application) *fiber.App {
 	manufactureService := manSrv.New(a)
 	f.Put("/api/manufactures", manufactureService.FiberHandlerPutManufacture)
 	f.Get("/api/manufactures", manufactureService.FiberHandlerGetManufactures)
+	f.Get("/api/manufactures/:id", manufactureService.FiberHandlerGetManufacture)
 
 	return f
 }
