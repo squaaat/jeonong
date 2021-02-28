@@ -8,17 +8,24 @@
 J_ENV: ${env.J_ENV}
 J_CICD: ${env.J_CICD}
 GOOGLE_OAUTH_CLIENT_ID: ${env.GOOGLE_OAUTH_CLIENT_ID}
+AWS_ACM_ARN: ${ssm:/nearsfeed/infra/aws_acm_certificate/nearsfeed.com/arn~true}
 
 nearsfeed-admin:
   component: "./node_modules/@sls-next/serverless-component"
   inputs:
     name: nearsfeed-admin
     bucketName: nearsfeed-admin
+
     bucketRegion: us-east-1
     build:
       env:
         J_ENV: ${J_ENV}
         J_CICD: ${J_CICD}
         GOOGLE_OAUTH_CLIENT_ID: ${GOOGLE_OAUTH_CLIENT_ID}
+    domain: ["admin.alpha", "nearsfeed.com"]
     cloudfront:
-      distributionId: E2E5ORCNNCDGZY
+      distributionId: E1W3Y5SGQ2B113
+      certificate:
+        cloudFrontDefaultCertificate: false # specify false and one of IAM/ACM certificates, or specify true and omit IAM/ACM inputs for default certificate
+        acmCertificateArn: ${AWS_ACM_ARN}
+        minimumProtocolVersion: "TLSv1.2_2019"
