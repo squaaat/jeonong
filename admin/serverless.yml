@@ -8,24 +8,26 @@
 
 J_ENV: ${env.J_ENV}
 J_CICD: ${env.J_CICD}
-GOOGLE_OAUTH_CLIENT_ID: ${env.GOOGLE_OAUTH_CLIENT_ID}
 ADMIN_AWS_ACM_ARN: ${env.ADMIN_AWS_ACM_ARN}
+ADMIN_AWS_ROLE_ARN: ${env.ADMIN_AWS_ROLE_ARN}
 
 nearsfeed-admin:
   component: "./node_modules/@sls-next/serverless-component"
   inputs:
     name: nearsfeed-admin
-    bucketName: nearsfeed-admin
+    roleArn: ${ADMIN_AWS_ROLE_ARN} # role연결 안해줌. 먹통임, 직접 가서 연결함 It's fxxking idiot.
 
+    bucketName: nearsfeed-admin
     bucketRegion: us-east-1
     build:
       env:
         J_ENV: ${J_ENV}
         J_CICD: ${J_CICD}
-        GOOGLE_OAUTH_CLIENT_ID: ${GOOGLE_OAUTH_CLIENT_ID}
-        ADMIN_AWS_ACM_ARN: ${ADMIN_AWS_ACM_ARN}
     domain: ["admin.alpha", "nearsfeed.com"]
     cloudfront:
+      # api/*:
+      #   forward:
+      #     headers: [Host]
       distributionId: E1W3Y5SGQ2B113
       certificate:
         cloudFrontDefaultCertificate: false

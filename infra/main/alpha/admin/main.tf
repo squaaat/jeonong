@@ -52,6 +52,20 @@ JSON
         "ssm:Get*"
       ],
       "Resource": "*"
+    },
+    {
+      "Effect": "Allow",
+      "Action": [
+        "s3:CreateBucket",
+        "s3:GetAccelerateConfiguration",
+        "s3:GetObject",
+        "s3:HeadBucket",
+        "s3:ListBucket",
+        "s3:PutAccelerateConfiguration",
+        "s3:PutBucketPolicy",
+        "s3:PutObject"
+      ],
+      "Resource": "arn:aws:s3:::nearsfeed-admin/*"
     }
   ]
 }
