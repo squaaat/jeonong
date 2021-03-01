@@ -9,7 +9,7 @@ terraform {
 
   backend "s3" {
     bucket         = "nearsfeed-infrastructure"
-    key            = "terraform/common"
+    key            = "terraform/main/alpha"
     region         = "ap-northeast-2"
     encrypt        = true
     dynamodb_table = "nearsfeed-terraform-lock"
@@ -18,25 +18,4 @@ terraform {
 
 provider "aws" {
   region = "ap-northeast-2"
-}
-
-provider "aws" {
-  alias = "useast1"
-  region = "us-east-1"
-}
-
-data "aws_availability_zone" "a" {
-  name = "ap-northeast-2a"
-}
-
-data "aws_availability_zone" "b" {
-  name = "ap-northeast-2b"
-}
-
-data "aws_availability_zone" "c" {
-  name = "ap-northeast-2c"
-}
-
-data "aws_availability_zone" "d" {
-  name = "ap-northeast-2d"
 }

@@ -26,10 +26,42 @@ data "aws_acm_certificate" "nearsfeed_com" {
   statuses = ["ISSUED"]
 }
 
+
+// ------ us-east-1
+resource "aws_ssm_parameter" "useast1_aws_acm_certificate_nearsfeed_com_domain" {
+  provider = aws.useast1
+
+  name      = "/nearsfeed/infra/aws_acm_certificate/nearsfeed.com/domain"
+  type      = "String"
+  value     = data.aws_acm_certificate.useast1_nearsfeed_com.domain
+  overwrite = true
+}
+
+resource "aws_ssm_parameter" "useast1_aws_acm_certificate_nearsfeed_com_arn" {
+  provider = aws.useast1
+
+  name      = "/nearsfeed/infra/aws_acm_certificate/nearsfeed.com/arn"
+  type      = "String"
+  value     = data.aws_acm_certificate.useast1_nearsfeed_com.arn
+  overwrite = true
+}
+
+data "aws_acm_certificate" "useast1_nearsfeed_com" {
+  provider = aws.useast1
+
+  domain   = "nearsfeed.com"
+  statuses = ["ISSUED"]
+}
+
+
 output "infra_ssm" {
   value = {
     aws_route_53_nearsfeed_com_zone_id       = aws_ssm_parameter.aws_route_53_nearsfeed_com_zone_id.value
     aws_acm_certificate_nearsfeed_com_domain = aws_ssm_parameter.aws_acm_certificate_nearsfeed_com_domain.value
     aws_acm_certificate_nearsfeed_com_arn    = aws_ssm_parameter.aws_acm_certificate_nearsfeed_com_arn.value
+
+    useast1_aws_acm_certificate_nearsfeed_com_domain = aws_ssm_parameter.useast1_aws_acm_certificate_nearsfeed_com_domain.value
+    useast1_aws_acm_certificate_nearsfeed_com_arn    = aws_ssm_parameter.useast1_aws_acm_certificate_nearsfeed_com_arn.value
+
   }
 }
