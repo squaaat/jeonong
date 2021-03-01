@@ -17,6 +17,9 @@ export const RestHTTPClientAxios = async ():Promise<AxiosInstance> => {
     const e = await getEnvToUseClient()
     restAxios = axios.create({
       baseURL: e.RestHTTPServer?.Url,
+      headers: {
+        "Content-Type": "application/json; charset=utf-8",
+      },
     });
   }
   return restAxios
@@ -27,6 +30,9 @@ export const RestHTTPServerAxios = async ():Promise<AxiosInstance> => {
     const e = await getEnvToUseServer()
     restAxios = axios.create({
       baseURL: e.RestHTTPServer?.Url,
+      headers: {
+        "Content-Type": "application/json; charset=utf-8",
+      },
     });
   }
   return restAxios

@@ -52,7 +52,6 @@ func (s *Service) FiberHandlerGetManufactures(ctx *fiber.Ctx) error {
 	return ctx.Send(b)
 }
 
-
 func (s *Service) FiberHandlerGetManufacture(ctx *fiber.Ctx) error {
 	op := er.CallerOp()
 	ctx.Set(fiber.HeaderContentType, fiber.MIMEApplicationJSONCharsetUTF8)

@@ -1,6 +1,6 @@
 import { FC, useState, useEffect } from 'react'
-import { Card, Form, Cascader, Input, Radio } from 'antd';
-import { Category, getCategories} from 'models/Category'
+import { Card, Form, Cascader, Input, InputNumber, Radio, Button } from 'antd';
+import { Category, getCategories, putCategories } from 'models/Category'
 import { CascaderOptionType } from 'antd/lib/cascader';
 
 import _const from 'utils/const'
@@ -13,31 +13,19 @@ const layout = {
   wrapperCol: { span: 18 },
 };
 
-// type RequiredMark = boolean | 'optional';
-
-
+type RequiredMark = boolean | 'optional';
 const depthDefaultValue = _const.CategoryDepth.Value.depth2
 
 const CategoryManager: FC<CategoryManagerProps> = () => {
-  
-  
   const [categories, setCategories] = useState(Array<Category>());
   const [isRefresh, setRefresh] = useState(true);
   const [selectedDepth, setSelectedDepth] = useState(depthDefaultValue)
 
-  // FIXME 영균
-  // useEffect(() => {
-  //   getCategories().then((categories) => {
-  //     console.log("is call once")
-  //     setCategories(categories)
-  //   })
-  // }, [])
-
   // const [form] = Form.useForm();
-  // const [requiredMark, setRequiredMarkType] = useState<RequiredMark>('optional');
-  // const onRequiredTypeChange = ({ requiredMarkValue }: { requiredMarkValue: RequiredMark }) => {
-  //   setRequiredMarkType(requiredMarkValue);
-  // };
+  const [requiredMark, setRequiredMarkType] = useState<RequiredMark>('optional');
+  const onRequiredTypeChange = ({ requiredMarkValue }: { requiredMarkValue: RequiredMark }) => {
+    setRequiredMarkType(requiredMarkValue);
+  };
   // console.log(form)
   // console.log(requiredMark)
 
@@ -56,8 +44,48 @@ const CategoryManager: FC<CategoryManagerProps> = () => {
 
 
   const onCategorySubmit = (values: any) => {
-    console.log('Success:', values);
-    setRefresh(true)
+    if (!values) return
+    let depth = 1
+    if (values?.depth === _const.CategoryDepth.Label.depth1) {
+      depth = 1
+    } else if (values?.depth === _const.CategoryDepth.Label.depth2) {
+      depth = 2
+    } else if (values?.depth === _const.CategoryDepth.Label.depth3) {
+      depth = 3
+    }
+
+    const c: Category = {
+      ID: '',
+      FullName: '',
+      Status: '',
+      Sort: values?.sort,
+      Name: values?.name,
+      Code: values?.code,
+      Depth: depth,
+    }
+    const cats = values?.parent_category || []
+
+    const parentID = cats[cats.length - 1]
+    const pc = categories.find((v) => v.ID === parentID)
+
+    console.log(values)
+    console.log(values?.parent_category)
+    console.log(pc)
+    if (depth > 1) {
+      const pc = categories.find((v) => v.ID === values?.parent_category)
+      c.Category1ID = pc?.Category1ID
+      c.Category2ID = pc?.Category2ID
+      c.Category3ID = pc?.Category3ID
+      c.Category4ID = pc?.Category4ID
+    }
+  
+    console.log(c)
+    putCategories(c).then((res) => {
+      console.log(res)
+      setRefresh(true)
+    }).catch((e) => {
+      console.log(e)
+    })
   };
 
   const onCategorySubmitFailed = (errorInfo: any) => {
@@ -72,23 +100,33 @@ const CategoryManager: FC<CategoryManagerProps> = () => {
         initialValues={{ remember: true }}
         onFinish={onCategorySubmit}
         onFinishFailed={onCategorySubmitFailed}
-        // onValuesChange={onRequiredTypeChange}
+        onValuesChange={onRequiredTypeChange}
         >
         <Form.Item
           label="name"
           name="name"
+          rules={[{ type: 'string', required: true, message: 'name 값을 입력해주세요.' }]}
         >
           <Input />
         </Form.Item>
         <Form.Item
           label="code"
           name="code"
+          rules={[{ type: 'string', required: true, message: 'code 값을 입력해주세요.' }]}
         >
           <Input />
         </Form.Item>
         <Form.Item
+          label="sort"
+          name="sort"
+          rules={[{ type: 'number', required: true, message: 'sort 값을 입력해주세요.' }]}
+        >
+          <InputNumber min={1} max={30} defaultValue={1} />
+        </Form.Item>
+        <Form.Item
           label="depth"
           name="depth"
+          rules={[{ type: 'string', required: true, message: 'depth 값을 입력해주세요.' }]}
         >
           <Radio.Group
             defaultValue={depthDefaultValue}
@@ -100,7 +138,6 @@ const CategoryManager: FC<CategoryManagerProps> = () => {
               { label: _const.CategoryDepth.Label.depth1, value: _const.CategoryDepth.Value.depth1},
               { label: _const.CategoryDepth.Label.depth2, value: _const.CategoryDepth.Value.depth2},
               { label: _const.CategoryDepth.Label.depth3, value: _const.CategoryDepth.Value.depth3},
-              { label: _const.CategoryDepth.Label.depth4, value: _const.CategoryDepth.Value.depth4},
             ].map((v) => (
               <Radio.Button key={`depth-${v.value}`} value={v.value}>{v.label}</Radio.Button>
             ))}
@@ -109,17 +146,23 @@ const CategoryManager: FC<CategoryManagerProps> = () => {
         <Form.Item
           label="parent_category"
           name="parent_category"
+          rules={selectedDepth === _const.CategoryDepth.Value.depth1 ? [] : [{ type: 'array', required: true, message: 'parent_category 값을 선택해주세요' }]}
         >
           <Cascader
             options={parseCategoryToCascaderOptions(selectedDepth, categories)}
           />
+        </Form.Item>
+        <Form.Item wrapperCol={{ offset: 6 }}>
+          <Button type="primary" htmlType="submit" style={{ width: '100%' }}>
+            Submit
+          </Button>
         </Form.Item>
       </Form>
     </Card>
   )
 }
 
-const parseCategoryToCascaderOptions = (maximumDepth: string, categories: Array<Category>): Array<CascaderOptionType> => {
+const parseCategoryToCascaderOptions = (selectedDepth: string, categories: Array<Category>): Array<CascaderOptionType> => {
   const depth: Array<Map<string, Category>> = []
   categories.forEach((v) => {
     const d = depth[v.Depth - 1]
@@ -131,10 +174,10 @@ const parseCategoryToCascaderOptions = (maximumDepth: string, categories: Array<
   })
 
   let maxDepth = 1
-  if (maximumDepth === _const.CategoryDepth.Value.depth1) maxDepth = 1
-  else if (maximumDepth === _const.CategoryDepth.Value.depth2) maxDepth = 2
-  else if (maximumDepth === _const.CategoryDepth.Value.depth3) maxDepth = 3
-  else if (maximumDepth === _const.CategoryDepth.Value.depth4) maxDepth = 4
+  if (selectedDepth === _const.CategoryDepth.Value.depth1) return []
+  else if (selectedDepth === _const.CategoryDepth.Value.depth2) maxDepth = 1
+  else if (selectedDepth === _const.CategoryDepth.Value.depth3) maxDepth = 2
+  else if (selectedDepth === _const.CategoryDepth.Value.depth4) maxDepth = 3
 
   const debug = {
     count: 0,
@@ -147,7 +190,7 @@ const parseCategoryToCascaderOptions = (maximumDepth: string, categories: Array<
     parentId: '',
     debug: debug,
   })
-  console.log(`depth: ${maximumDepth}, item.size: ${categories.length} => total cascade operating count: ${debug.count}`)
+  console.log(`depth: ${selectedDepth}, item.size: ${categories.length} => total cascade operating count: ${debug.count}`)
   return result
 }
 

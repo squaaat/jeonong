@@ -7,6 +7,7 @@ import (
 	"github.com/aws/aws-lambda-go/events"
 	"github.com/aws/aws-lambda-go/lambda"
 	adapter "github.com/awslabs/aws-lambda-go-api-proxy/fiber"
+	"github.com/rs/zerolog/log"
 
 	"github.com/squaaat/nearsfeed/api/internal/app"
 	"github.com/squaaat/nearsfeed/api/internal/config"
@@ -21,6 +22,7 @@ func main() {
 	lambdaApp := adapter.New(http)
 
 	lambda.Start(func(ctx context.Context, req events.APIGatewayProxyRequest) (events.APIGatewayProxyResponse, error) {
+		log.Debug().Interface("API_Gateway_Proxy_header", req.Headers).Send()
 		return lambdaApp.ProxyWithContext(ctx, req)
 	})
 }

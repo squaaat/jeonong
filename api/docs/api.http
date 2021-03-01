@@ -3,13 +3,14 @@
 # 2. run each http call you want
 
 ### put category
-PUT http://localhost:4000/api/categories
+# Content-Type: application/x-www-form-urlencoded
+PUT https://api.alpha.nearsfeed.com/api/categories
 Content-Type: application/json
 
 {
   "Category": {
-    "Name": "테스트2",
-    "Code": "test2",
+    "Name": "테스트7",
+    "Code": "test7",
     "Depth": 1,
     "Sort": 2,
     "Category1ID": "",
@@ -19,9 +20,10 @@ Content-Type: application/json
   }
 }
 
+
 ### get categories
 GET http://localhost:4000/api/categories
-Content-Type: application/json
+Content-Type: application/json; charset=utf-8
 
 ### get category
 GET http://localhost:4000/api/categories/50eda37c-e757-4224-9f22-23acb2c04558
