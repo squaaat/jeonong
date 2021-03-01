@@ -10,7 +10,7 @@
   },
   "dependencies": {
     "@ant-design/icons": "^4.5.0",
-    "@sls-next/serverless-component": "^1.18.0",
+    "@sls-next/serverless-component": "^1.19.0-alpha.32",
     "@types/js-yaml": "^4.0.0",
     "antd": "^4.12.3",
     "aws-sdk": "^2.840.0",

@@ -15,7 +15,7 @@ nearsfeed-admin:
   component: "./node_modules/@sls-next/serverless-component"
   inputs:
     name: nearsfeed-admin
-    roleArn: ${ADMIN_AWS_ROLE_ARN} # role연결 안해줌. 먹통임, 직접 가서 연결함 It's fxxking idiot.
+    roleArn: ${ADMIN_AWS_ROLE_ARN}
 
     bucketName: nearsfeed-admin
     bucketRegion: us-east-1
