@@ -10,9 +10,15 @@ export type ServerEnv = {
   AppName?: string;
 
   RestHTTPServer?: RestHTTPServer;
+  GoogleOauth?: GoogleOauth;
 }
 type RestHTTPServer = {
   Url: string;
+}
+
+type GoogleOauth = {
+  ClientID?: string;
+  ClientSecret?: string;
 }
 
 const serverEnv: ServerEnv = {
@@ -88,7 +94,12 @@ const initServerEnv = (data: any) => {
   serverEnv.AppName = data.env?.app.app_name || ''
 
   serverEnv.RestHTTPServer = {
-    Url: data.env?.rest_http_server?.url || ''
+    Url: data.env?.rest_http_server?.url || '',
+  }
+
+  serverEnv.GoogleOauth = {
+    ClientID: data.env?.google_oauth?.client_id || '',
+    ClientSecret: data.env?.google_oauth?.client_secret || '',
   }
 }
 const initClientEnv = (data: ClientEnv) => {

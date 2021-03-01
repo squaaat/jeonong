@@ -1,3 +1,13 @@
+function get_ssm() {
+  region=$1
+  path=$2
+
+  aws ssm get-parameter \
+    --region $region \
+    --name $path \
+    --with-decryption | jq -crM ".Parameter.Value"
+}
+
 # AWS Secrets keys
 export AWS_REGION=ap-northeast-2
 export AWS_DEFAULT_REGION=ap-northeast-2
@@ -7,7 +17,6 @@ export AWS_SECRET_ACCESS_KEY=
 export J_ENV=alpha
 export J_CICD=false
 
-export GOOGLE_OAUTH_CLIENT_ID=
-export GOOGLE_OAUTH_CLIENT_SECRET=
-
-export ADMIN_AWS_ACM_ARN=
+# for admin
+export ADMIN_AWS_ACM_ARN=$(get_ssm "us-east-1" "/nearsfeed/infra/aws_acm_certificate/nearsfeed.com/arn" )
+export ADMIN_AWS_ROLE_ARN=$(get_ssm "us-east-1" "/nearsfeed/infra/aws_iam_role/admin/arn" )
