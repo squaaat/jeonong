@@ -14,12 +14,12 @@ module.exports = {
   webpack(config) {
 		config.resolve.modules.push(__dirname); // absolute paht를 위해
 
-    if (!process.env.BUNDLE_AWS_SDK) { // aws-sdk bundling을 위해
-      config.externals = config.externals || [];
-      config.externals.push({ "aws-sdk": "aws-sdk" });
-    } else {
-      console.warn("Bundling aws-sdk. Only doing this in development mode");
-    }
+    // if (!process.env.BUNDLE_AWS_SDK) { // aws-sdk bundling을 위해
+    //   config.externals = config.externals || [];
+    //   config.externals.push({ "aws-sdk": "aws-sdk" });
+    // } else {
+    //   console.warn("Bundling aws-sdk. Only doing this in development mode");
+    // }
 
 		return config;
 	},

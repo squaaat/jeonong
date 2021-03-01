@@ -2,7 +2,6 @@ import AWS from 'aws-sdk'
 import yaml from 'js-yaml'
 import axios from 'axios'
 
-
 export type ServerEnv = {
   Env: string;
   Debug?: boolean;
@@ -102,6 +101,7 @@ const initServerEnv = (data: any) => {
     ClientSecret: data.env?.google_oauth?.client_secret || '',
   }
 }
+
 const initClientEnv = (data: ClientEnv) => {
   if (!data) return
   if (!data.Env) return
@@ -116,4 +116,16 @@ const initClientEnv = (data: ClientEnv) => {
   clientEnv.Project = data.Project
   clientEnv.AppName = data.AppName
   clientEnv.RestHTTPServer = data.RestHTTPServer
+}
+
+export const parseToClientEnv = (se: ServerEnv): ClientEnv | any => {
+  if (!se) return {}
+
+  return {
+    Env: se.Env,
+    Debug: se.Debug,
+    Project: se.Project,
+    AppName: se.AppName,
+    RestHTTPServer: se.RestHTTPServer,
+  }
 }
