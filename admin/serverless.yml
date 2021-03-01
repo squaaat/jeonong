@@ -25,9 +25,6 @@ nearsfeed-admin:
         J_CICD: ${J_CICD}
     domain: ["admin.alpha", "nearsfeed.com"]
     cloudfront:
-      # api/*:
-      #   forward:
-      #     headers: [Host]
       distributionId: E1W3Y5SGQ2B113
       certificate:
         cloudFrontDefaultCertificate: false
