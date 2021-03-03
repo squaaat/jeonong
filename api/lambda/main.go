@@ -6,8 +6,9 @@ import (
 
 	"github.com/aws/aws-lambda-go/events"
 	"github.com/aws/aws-lambda-go/lambda"
-	adapter "github.com/awslabs/aws-lambda-go-api-proxy/fiber"
 	"github.com/rs/zerolog/log"
+
+	adapter "github.com/squaaat/nearsfeed/api/pkg/lambdaadapter"
 
 	"github.com/squaaat/nearsfeed/api/internal/app"
 	"github.com/squaaat/nearsfeed/api/internal/config"

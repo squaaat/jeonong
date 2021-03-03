@@ -22,8 +22,8 @@ Content-Type: application/json
 
 
 ### get categories
-GET http://localhost:4000/api/categories
-Content-Type: application/json; charset=utf-8
+GET https://api.alpha.nearsfeed.com/api/categories
+Content-Type: application/json
 
 ### get category
 GET http://localhost:4000/api/categories/50eda37c-e757-4224-9f22-23acb2c04558
