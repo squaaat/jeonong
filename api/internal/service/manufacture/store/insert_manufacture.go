@@ -10,7 +10,7 @@ import (
 func (s *Service) insertManufacture(m *model.Manufacture) (*model.Manufacture, error) {
 	op := er.CallerOp()
 
-	m.DefaultModel.Status = model.StatusIdle
+	m.Status = model.StatusIdle
 	tx := s.C.ServiceDB.DB.Create(m).Scan(m)
 	if tx.Error != nil {
 		return nil, er.WrapOp(tx.Error, op)

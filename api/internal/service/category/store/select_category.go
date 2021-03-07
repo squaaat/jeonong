@@ -1,6 +1,8 @@
 package store
 
 import (
+	"fmt"
+
 	"github.com/pkg/errors"
 	"gorm.io/gorm"
 
@@ -27,6 +29,7 @@ func (s *Service) SelectCategory() ([]*model.Category, error) {
 		}
 	}
 	rows, err := tx.Rows()
+	fmt.Println(rows, err)
 	defer rows.Close()
 	if err != nil {
 		return nil, er.WrapOp(err, op)

@@ -9,7 +9,6 @@ import (
 	"github.com/squaaat/nearsfeed/api/internal/config"
 	_const "github.com/squaaat/nearsfeed/api/internal/const"
 	"github.com/squaaat/nearsfeed/api/internal/container"
-	"github.com/squaaat/nearsfeed/api/internal/db"
 	categoryStore "github.com/squaaat/nearsfeed/api/internal/service/category/store"
 	manufactureStore "github.com/squaaat/nearsfeed/api/internal/service/manufacture/store"
 	"github.com/squaaat/nearsfeed/api/migrations"
@@ -41,11 +40,6 @@ func newGormMigrateSync() *cobra.Command {
 			}
 
 			cfg, err := config.New(env)
-			if err != nil {
-				return err
-			}
-
-			err = db.CreateDB(env, cfg.ServiceDB)
 			if err != nil {
 				return err
 			}
