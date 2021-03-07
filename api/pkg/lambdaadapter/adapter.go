@@ -1,4 +1,5 @@
 package lambdaadapter
+
 // Package fiberadapter adds Fiber support for the aws-severless-go-api library.
 // Uses the core package behind the scenes and exposes the New method to
 // get a new instance and Proxy method to send request to the Fiber app.

@@ -6,19 +6,18 @@ import (
 	"os"
 
 	"github.com/go-gormigrate/gormigrate/v2"
-	"github.com/rs/zerolog/log"
 	"gorm.io/gorm"
 
-	"github.com/squaaat/nearsfeed/api/internal/app"
+	"github.com/squaaat/nearsfeed/api/internal/container"
 	"github.com/squaaat/nearsfeed/api/internal/model"
 )
 
 type Syncker struct {
-	App          *app.Application
+	App          *container.Container
 	GormMigrator *gormigrate.Gormigrate
 }
 
-func New(a *app.Application) *Syncker {
+func New(a *container.Container) *Syncker {
 	s := &Syncker{
 		App: a,
 	}
@@ -33,25 +32,22 @@ func New(a *app.Application) *Syncker {
 	return s
 }
 
-func (s *Syncker) Sync() {
-	if err := s.GormMigrator.Migrate(); err != nil {
-		log.Fatal().Err(err).Msg("Could not migrate")
-	}
-	log.Info().Msg("Migration did run successfully")
+func (s *Syncker) Sync() error {
+	return s.GormMigrator.Migrate()
 }
 
-func (s *Syncker) Create(v string) {
+func (s *Syncker) Create(v string) error {
 	tmpl := versionedTemplate(v)
 
 	pwd, err := os.Getwd()
 	if err != nil {
-		log.Fatal().Err(err).Send()
+		return err
 	}
 
 	dest := fmt.Sprintf("%s/migrations/migration_%s.go", pwd, v)
 	err = ioutil.WriteFile(dest, []byte(tmpl), 0644)
 	if err != nil {
-		log.Fatal().Err(err).Send()
+		return err
 	}
 
 	msg := `
@@ -79,6 +75,7 @@ func (s *Syncker) load() []*gormigrate.Migration {
 		v,
 		pwd,
 	)
+	return nil
 }
 
 func (s *Syncker) load() []*gormigrate.Migration {

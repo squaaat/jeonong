@@ -11,7 +11,7 @@ func (s *Service) insertManufacture(m *model.Manufacture) (*model.Manufacture, e
 	op := er.CallerOp()
 
 	m.DefaultModel.Status = model.StatusIdle
-	tx := s.App.ServiceDB.DB.Create(m).Scan(m)
+	tx := s.C.ServiceDB.DB.Create(m).Scan(m)
 	if tx.Error != nil {
 		return nil, er.WrapOp(tx.Error, op)
 	}
@@ -25,7 +25,7 @@ func (s *Service) insertManufacture(m *model.Manufacture) (*model.Manufacture, e
 func (s *Service) InsertManufactureIfNotCategory(m *model.Manufacture) (*model.Manufacture, error) {
 	op := er.CallerOp()
 
-	subM, err := GetManufactureByModel(s.App.ServiceDB.DB, m)
+	subM, err := GetManufactureByModel(s.C.ServiceDB.DB, m)
 	if err != nil {
 		if er.Is(err, gorm.ErrRecordNotFound) {
 			subM, err = s.insertManufacture(m)
@@ -46,7 +46,7 @@ func (s *Service) InsertManufactureIfNotCategory(m *model.Manufacture) (*model.M
 func (s *Service) InsertManufactureOnlyNotExist(m *model.Manufacture) (*model.Manufacture, error) {
 	op := er.CallerOp()
 
-	subM, err := GetManufactureByModel(s.App.ServiceDB.DB, m)
+	subM, err := GetManufactureByModel(s.C.ServiceDB.DB, m)
 	if err != nil {
 		if er.Is(err, gorm.ErrRecordNotFound) {
 			subM, err := s.insertManufacture(m)

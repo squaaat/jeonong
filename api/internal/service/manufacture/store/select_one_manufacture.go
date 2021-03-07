@@ -9,7 +9,7 @@ func (s *Service) SelectOneManufacture(id string) (*model.Manufacture, error) {
 	op := er.CallerOp()
 
 	m := &model.Manufacture{}
-	tx := s.App.ServiceDB.DB.
+	tx := s.C.ServiceDB.DB.
 		Model(m).
 		Where("id = ?", id).
 		Scan(m)

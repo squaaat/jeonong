@@ -10,7 +10,6 @@ import (
 	gormLogger "gorm.io/gorm/logger"
 
 	"github.com/pkg/errors"
-	"github.com/rs/zerolog/log"
 	"gorm.io/driver/mysql"
 	"gorm.io/gorm"
 	"gorm.io/gorm/schema"
@@ -99,7 +98,11 @@ func New(cfg *Config) (*Client, error) {
 	}, nil
 }
 
-func Initialize(cfg *config.ServiceDBConfig) error {
+func CreateDB(env string, cfg *config.ServiceDBConfig) error {
+	if env != _const.EnvAlpha {
+		return errors.New("Clean command only accept 'alpha' env")
+	}
+
 	dsn := fmt.Sprintf(
 		"%s:%s@tcp(%s:%s)/"+
 			"?charset=utf8mb4&parseTime=True&loc=Local",
@@ -122,30 +125,29 @@ func Initialize(cfg *config.ServiceDBConfig) error {
 	return nil
 }
 
-func (c *Client) Clean() {
-	if c.Config.Env != _const.EnvAlpha {
-		err := errors.New("Clean command only accept 'alpha' env")
-		log.Fatal().Err(err).Send()
+func DropDB(env string, cfg *config.ServiceDBConfig) error {
+	if env != _const.EnvAlpha {
+		return errors.New("Clean command only accept 'alpha' env")
 	}
 
 	dsn := fmt.Sprintf(
 		"%s:%s@tcp(%s:%s)/"+
 			"?charset=utf8mb4&parseTime=True&loc=Local",
-		c.Config.Username,
-		c.Config.Password,
-		c.Config.Host,
-		c.Config.Port,
+		cfg.Username,
+		cfg.Password,
+		cfg.Host,
+		cfg.Port,
 	)
 
-	db, err := sql.Open(c.Config.Dialect, dsn)
+	db, err := sql.Open(cfg.Dialect, dsn)
 	if err != nil {
-		panic(err)
+		return err
 	}
 	defer db.Close()
 
-	_, err = db.Exec(fmt.Sprintf("DROP DATABASE %s;", c.Config.Schema))
+	_, err = db.Exec(fmt.Sprintf("DROP DATABASE %s;", cfg.Schema))
 	if err != nil {
-		panic(err)
+		return err
 	}
-
+	return nil
 }

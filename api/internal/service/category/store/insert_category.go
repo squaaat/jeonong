@@ -30,7 +30,7 @@ func (s *Service) insertCategory(mc *model.Category) (*model.Category, error) {
 		mc.Category4ID = mc.ID
 	}
 
-	tx := s.App.ServiceDB.DB.Create(mc).Scan(mc)
+	tx := s.C.ServiceDB.DB.Create(mc).Scan(mc)
 	if tx.Error != nil {
 		return nil, er.WrapOp(tx.Error, op)
 	}
@@ -43,7 +43,7 @@ func (s *Service) insertCategory(mc *model.Category) (*model.Category, error) {
 		return nil, err
 	}
 
-	tx = s.App.ServiceDB.DB.Model(mc).Update("full_name", fullName).Where("id = ?", mc.ID)
+	tx = s.C.ServiceDB.DB.Model(mc).Update("full_name", fullName).Where("id = ?", mc.ID)
 	if tx.Error != nil {
 		if !errors.Is(tx.Error, gorm.ErrRecordNotFound) {
 			return nil, er.WrapOp(tx.Error, op)
@@ -60,7 +60,7 @@ func (s *Service) insertCategory(mc *model.Category) (*model.Category, error) {
 func (s *Service) InsertCategoryIfNotExist(c *model.Category) (*model.Category, error) {
 	op := er.CallerOp()
 
-	subCat, err := GetCategoryByModel(s.App.ServiceDB.DB, c)
+	subCat, err := GetCategoryByModel(s.C.ServiceDB.DB, c)
 	if err != nil {
 		if er.Is(err, gorm.ErrRecordNotFound) {
 			subCat, err = s.insertCategory(c)
@@ -81,7 +81,7 @@ func (s *Service) InsertCategoryIfNotExist(c *model.Category) (*model.Category, 
 func (s *Service) InsertCategoryOnlyNotExist(c *model.Category) (*model.Category, error) {
 	op := er.CallerOp()
 
-	subCat, err := GetCategoryByModel(s.App.ServiceDB.DB, c)
+	subCat, err := GetCategoryByModel(s.C.ServiceDB.DB, c)
 	if err != nil {
 		if er.Is(err, gorm.ErrRecordNotFound) {
 			subCat, err := s.insertCategory(c)

@@ -14,6 +14,11 @@ const (
 
 	EnvAlpha = "alpha"
 	EnvProd  = "prod"
+
+	ArgEnv        = "environment"
+	ArgEnvDefault = EnvAlpha
+
+	ArgVersion = "version"
 )
 
 var (

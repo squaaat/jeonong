@@ -13,7 +13,7 @@ func (s *Service) SelectCategory() ([]*model.Category, error) {
 
 	var categories []*model.Category
 	tableName := (&model.Category{}).TableName()
-	tx := s.App.ServiceDB.DB.
+	tx := s.C.ServiceDB.DB.
 		Table(tableName).
 		Where("status = ?", model.StatusIdle).
 		Order("depth ASC").

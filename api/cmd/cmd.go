@@ -1,7 +1,6 @@
 package cmd
 
 import (
-	"github.com/rs/zerolog/log"
 	"github.com/spf13/cobra"
 
 	cmdgorm "github.com/squaaat/nearsfeed/api/cmd/gorm"
@@ -9,7 +8,6 @@ import (
 
 const (
 	ArgEnv        = "environment"
-	ArgEnvShort   = "e"
 	ArgEnvDefault = "alpha"
 )
 
@@ -23,12 +21,13 @@ func newCliCmd() *cobra.Command {
 	}
 }
 
-func Start() {
+func Start() error {
 	c := newCliCmd()
 	c.AddCommand(newHTTPCommand())
 	c.AddCommand(cmdgorm.New())
 
 	if err := c.Execute(); err != nil {
-		log.Fatal().Err(err).Send()
+		return err
 	}
+	return nil
 }

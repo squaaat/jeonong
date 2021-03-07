@@ -1,15 +1,15 @@
 package store
 
 import (
-	"github.com/squaaat/nearsfeed/api/internal/app"
+	"github.com/squaaat/nearsfeed/api/internal/container"
 )
 
 type Service struct {
-	App *app.Application
+	C *container.Container
 }
 
-func New(a *app.Application) *Service {
+func New(c *container.Container) *Service {
 	return &Service{
-		App: a,
+		C: c,
 	}
 }

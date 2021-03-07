@@ -8,21 +8,19 @@ import (
 	"github.com/aws/aws-sdk-go/aws"
 	"github.com/aws/aws-sdk-go/aws/session"
 	"github.com/aws/aws-sdk-go/service/ssm"
-	"github.com/rs/zerolog/log"
 	"github.com/spf13/viper"
 
 	_const "github.com/squaaat/nearsfeed/api/internal/const"
 	"github.com/squaaat/nearsfeed/api/internal/er"
 )
 
-func MustInit(e string, cicd bool) *Config {
+func New(e string) (*Config, error) {
 	op := er.CallerOp()
 	sess, err := session.NewSessionWithOptions(session.Options{
 		SharedConfigState: session.SharedConfigEnable,
 	})
 	if err != nil {
-		log.Fatal().Err(err).Send()
-		return nil
+		return nil, er.WrapOp(err, op)
 	}
 	s := ssm.New(sess)
 	fmt.Println(op, fmt.Sprintf("/%s/%s/%s/application.yml", _const.Project, _const.App, e))
@@ -32,8 +30,7 @@ func MustInit(e string, cicd bool) *Config {
 	})
 
 	if err != nil {
-		log.Fatal().Err(err).Send()
-		return nil
+		return nil, er.WrapOp(err, op)
 	}
 
 	value := *(param.Parameter.Value)
@@ -41,47 +38,26 @@ func MustInit(e string, cicd bool) *Config {
 	viper.ReadConfig(strings.NewReader(value))
 
 	return &Config{
-		Version:    viper.GetString("version"),
-		CICD:       cicd,
-		App:        newAppConfig(),
-		ServerHTTP: newServerHTTPConfig(),
-		ServiceDB:  newServiceDBConfig(),
-	}
-}
-
-type Config struct {
-	Version    string
-	CICD       bool
-	App        *AppConfig
-	ServerHTTP *ServerHTTPConfig
-	ServiceDB  *ServiceDBConfig
-}
-
-func newServerHTTPConfig() *ServerHTTPConfig {
-	return &ServerHTTPConfig{
-		Port:    viper.GetString("env.server_http.port"),
-		Timeout: viper.GetDuration("env.server_http.timeout"),
-	}
-}
-
-func newServiceDBConfig() *ServiceDBConfig {
-	return &ServiceDBConfig{
-		Host:     viper.GetString("env.service_db.host"),
-		Port:     viper.GetString("env.service_db.port"),
-		Dialect:  viper.GetString("env.service_db.dialect"),
-		Schema:   viper.GetString("env.service_db.schema"),
-		Username: viper.GetString("env.service_db.username"),
-		Password: viper.GetString("env.service_db.password"),
-	}
-}
-
-func newAppConfig() *AppConfig {
-	return &AppConfig{
-		Env:     viper.GetString("env.app.env"),
-		Debug:   viper.GetBool("env.app.debug"),
-		Project: viper.GetString("env.app.project"),
-		AppName: viper.GetString("env.app.app_name"),
-	}
+		Version: viper.GetString("version"),
+		App: &AppConfig{
+			Env:     viper.GetString("env.app.env"),
+			Debug:   viper.GetBool("env.app.debug"),
+			Project: viper.GetString("env.app.project"),
+			AppName: viper.GetString("env.app.app_name"),
+		},
+		ServerHTTP: &ServerHTTPConfig{
+			Port:    viper.GetString("env.server_http.port"),
+			Timeout: viper.GetDuration("env.server_http.timeout"),
+		},
+		ServiceDB: &ServiceDBConfig{
+			Host:     viper.GetString("env.service_db.host"),
+			Port:     viper.GetString("env.service_db.port"),
+			Dialect:  viper.GetString("env.service_db.dialect"),
+			Schema:   viper.GetString("env.service_db.schema"),
+			Username: viper.GetString("env.service_db.username"),
+			Password: viper.GetString("env.service_db.password"),
+		},
+	}, nil
 }
 
 type ServerHTTPConfig struct {
@@ -103,4 +79,12 @@ type AppConfig struct {
 	Debug   bool
 	Project string
 	AppName string
+}
+
+type Config struct {
+	Version    string
+	CICD       bool
+	App        *AppConfig
+	ServerHTTP *ServerHTTPConfig
+	ServiceDB  *ServiceDBConfig
 }

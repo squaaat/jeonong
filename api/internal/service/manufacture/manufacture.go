@@ -1,21 +1,21 @@
 package manufacture
 
 import (
-	"github.com/squaaat/nearsfeed/api/internal/app"
+	"github.com/squaaat/nearsfeed/api/internal/container"
 	"github.com/squaaat/nearsfeed/api/internal/er"
 	"github.com/squaaat/nearsfeed/api/internal/model"
 	manufactureStore "github.com/squaaat/nearsfeed/api/internal/service/manufacture/store"
 )
 
 type Service struct {
-	App              *app.Application
+	C                *container.Container
 	ManufactureStore *manufactureStore.Service
 }
 
-func New(a *app.Application) *Service {
+func New(c *container.Container) *Service {
 	return &Service{
-		App:              a,
-		ManufactureStore: manufactureStore.New(a),
+		C:                c,
+		ManufactureStore: manufactureStore.New(c),
 	}
 }
 

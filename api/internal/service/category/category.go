@@ -1,21 +1,21 @@
 package category
 
 import (
-	"github.com/squaaat/nearsfeed/api/internal/app"
+	"github.com/squaaat/nearsfeed/api/internal/container"
 	"github.com/squaaat/nearsfeed/api/internal/er"
 	"github.com/squaaat/nearsfeed/api/internal/model"
 	categoryStore "github.com/squaaat/nearsfeed/api/internal/service/category/store"
 )
 
 type Service struct {
-	App           *app.Application
+	C             *container.Container
 	CategoryStore *categoryStore.Service
 }
 
-func New(a *app.Application) *Service {
+func New(c *container.Container) *Service {
 	return &Service{
-		App:           a,
-		CategoryStore: categoryStore.New(a),
+		C:             c,
+		CategoryStore: categoryStore.New(c),
 	}
 }
 

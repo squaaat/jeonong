@@ -22,7 +22,7 @@ func (s *Service) categoryIDsByCode(code string) (string, string, string, string
 	op := er.CallerOp()
 
 	c := &model.Category{}
-	tx := s.App.ServiceDB.DB.
+	tx := s.C.ServiceDB.DB.
 		Model(c).
 		Where("code = ?", code).
 		Scan(c)
@@ -51,7 +51,7 @@ func (s *Service) categoryFullNameIds(depth int64, cat1, cat2, cat3, cat4 string
 	categoryTableName := (&model.Category{}).TableName()
 
 	names := &CategoryNames{}
-	tx := s.App.ServiceDB.DB.Raw(fmt.Sprintf(`
+	tx := s.C.ServiceDB.DB.Raw(fmt.Sprintf(`
 SELECT
 	(CASE
 		WHEN ? != ''
