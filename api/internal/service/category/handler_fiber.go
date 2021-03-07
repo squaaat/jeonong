@@ -1,8 +1,6 @@
 package category
 
 import (
-	"fmt"
-
 	"github.com/gofiber/fiber/v2"
 	jsoniter "github.com/json-iterator/go"
 
@@ -18,7 +16,6 @@ func (s *Service) FiberHandlerPutCategory(ctx *fiber.Ctx) error {
 		err = er.WrapKindAndOp(err, er.KindBadRequest, op)
 		return ctx.Status(er.ToHTTPStatus(err)).SendString(er.ToJSON(err))
 	}
-	fmt.Println(string(ctx.Body()))
 
 	out, err := s.PutCategory(in.Category)
 	if err != nil {

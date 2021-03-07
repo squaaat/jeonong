@@ -1,39 +1,26 @@
 package http
 
 import (
-	"fmt"
 	"strings"
 
 	"github.com/gofiber/fiber/v2"
-	"github.com/gofiber/fiber/v2/middleware/cors"
-	"github.com/rs/zerolog/log"
+	"github.com/gofiber/fiber/v2/middleware/logger"
 
-	_const "github.com/squaaat/nearsfeed/api/internal/const"
 	"github.com/squaaat/nearsfeed/api/internal/container"
 	catSrv "github.com/squaaat/nearsfeed/api/internal/service/category"
 	manSrv "github.com/squaaat/nearsfeed/api/internal/service/manufacture"
 )
 
-func ConfigCORS(origin, env string) *cors.Config {
-	cfg := &cors.ConfigDefault
-
-	if env == _const.EnvAlpha {
-		cfg.AllowCredentials = false
-		cfg.AllowOrigins = origin
-	}
-	return cfg
-}
-
 func New(cont *container.Container) *fiber.App {
 	f := fiber.New()
 
+	// CORS middleware
 	f.Use(func(ctx *fiber.Ctx) error {
 		reqOrigin := ctx.Get(fiber.HeaderOrigin, "*")
 		allowMethods := "GET,POST,HEAD,PUT,DELETE,PATCH"
 		ctx.Set(fiber.HeaderAccessControlAllowMethods, allowMethods)
 
 
-		fmt.Println(reqOrigin)
 		if strings.Contains(reqOrigin, "nearsfeed") {
 			ctx.Set(fiber.HeaderAccessControlAllowCredentials, "true")
 			ctx.Set(fiber.HeaderAccessControlAllowOrigin, reqOrigin)
@@ -45,22 +32,8 @@ func New(cont *container.Container) *fiber.App {
 		}
 		return ctx.Next()
 	})
-	f.Use(cors.New(cors.Config{
-		AllowCredentials: true,
-	}))
-	f.Use(func(ctx *fiber.Ctx) error {
-		err := ctx.Next()
-		log.Debug().
-			Str("req_path_params", ctx.Params("id", "")).
-			Str("req_uri", ctx.Path()+"?"+ctx.Request().URI().QueryArgs().String()).
-			Str("req_header", ctx.Request().Header.String()).
-			Bytes("req_body", ctx.Body()).
-			Str("res_header", ctx.Response().Header.String()).
-			Bytes("res_body", ctx.Response().Body()).
-			Err(err).
-			Send()
-		return nil
-	})
+	// req, res logger middleware
+	f.Use(logger.New())
 
 	f.Get("/health", func(ctx *fiber.Ctx) error {
 		return ctx.Status(fiber.StatusOK).SendString("ok")
