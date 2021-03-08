@@ -31,18 +31,8 @@ export const getCategories = async (): Promise<Category[]> => {
 export const putCategories = async (c: Category): Promise<Category> => {
   const restAxios = await RestAxios()
   const res = await restAxios.put('api/categories', {
-    "Category": {
-      "Name": "테스트7",
-      "Code": "test7",
-      "Depth": 1,
-      "Sort": 2,
-      "Category1ID": "",
-      "Category2ID": "",
-      "Category3ID": "",
-      "Category4ID": ""
-    }
-  }
-  )
+    "Category": c,
+  })
   const data: Category = res.data?.Category || c
   return data
 

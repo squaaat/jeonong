@@ -14,6 +14,8 @@ import (
 )
 
 func main() {
+	//log.Logger = zerolog.New(os.Stdout).With().Timestamp().Logger()
+
 	cfg, err := config.New(os.Getenv("J_ENV"))
 	if err != nil {
 		log.Fatal().Err(err).Send()
