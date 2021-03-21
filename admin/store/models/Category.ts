@@ -1,6 +1,6 @@
-import { RestAxios } from 'models/rest'
+import { RestAxios } from 'utils/rest'
 
-export type Category = {
+export interface ICategory {
   ID: string;
   Name: string;
   Code: string;
@@ -20,6 +20,27 @@ export type Category = {
   UpdatedBy?: string;
   DeletedAt?: Date;
 }
+export class Category implements ICategory {
+  ID = '';
+  Name = '';
+  Code = '';
+  FullName = '';
+  Depth = 1;
+  Status = 'IDLE';
+  Sort = 0;
+
+  Category1ID = '';
+  Category2ID = '';
+  Category3ID = '';
+  Category4ID = '';
+
+  CreatedAt = new Date();
+  CreatedBy = '';
+  UpdatedAt = new Date();
+  UpdatedBy = '';
+  DeletedAt = new Date();
+}
+
 
 export const getCategories = async (): Promise<Category[]> => {
   const restAxios = await RestAxios()
@@ -28,29 +49,11 @@ export const getCategories = async (): Promise<Category[]> => {
   return data
 }
 
-export const putCategories = async (c: Category): Promise<Category> => {
+export const putCategory = async (c: Category): Promise<Category> => {
   const restAxios = await RestAxios()
   const res = await restAxios.put('api/categories', {
     "Category": c,
   })
   const data: Category = res.data?.Category || c
   return data
-
 }
-// {
-//   "Category": {
-//     "Name": "테스트3",
-//     "Code": "test3",
-//     "Depth": 1,
-//     "Sort": 2,
-//   }
-// }
-
-// {
-//   "Category":{
-//     "Sort":4,
-//     "Name":"테스트4",
-//     "Code":"test4",
-//     "Depth":1
-//   }
-// }

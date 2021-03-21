@@ -1,8 +1,9 @@
 import { FC } from 'react'
 import DefaultLayout from 'components/DefaultLayout'
 import { PageHeader, Descriptions, Row, Col, Card, Layout, Form, Select } from 'antd';
-import { Session, MockSession } from 'models/Session'
+import { Session, MockSession } from 'store/models/Session'
 import CategoryManager from 'components/CategoryManager'
+import ManufactureManager from 'components/ManufactureManager';
 
 type PageProps = {
   session: Session;
@@ -20,16 +21,6 @@ const layout = {
 
 
 const IndexPage:FC<PageProps> = ({ session }) => {
-
-
-  const onCategorySubmit = (values: any) => {
-    console.log('Success:', values);
-  };
-
-  const onCategorySubmitFailed = (errorInfo: any) => {
-    console.log('Failed:', errorInfo);
-  };
-
   return (
     <DefaultLayout
       session={session}
@@ -63,7 +54,8 @@ const IndexPage:FC<PageProps> = ({ session }) => {
             />
           </Col>
           <Col span={12}>
-            "dd"
+            <ManufactureManager
+            />
           </Col>
         </Row>
         <Row
@@ -75,8 +67,6 @@ const IndexPage:FC<PageProps> = ({ session }) => {
                 {...layout}
                 name="basic"
                 initialValues={{ remember: true }}
-                onFinish={onCategorySubmit}
-                onFinishFailed={onCategorySubmitFailed}
               >
                 <Form.Item
                   label="category"
@@ -105,7 +95,6 @@ const IndexPage:FC<PageProps> = ({ session }) => {
     </DefaultLayout>
   )
 }
-
 
 // This function gets called at build time
 export async function getStaticProps() {

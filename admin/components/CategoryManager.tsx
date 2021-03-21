@@ -1,4 +1,4 @@
-import React, { FC} from 'react'
+import React, { FC } from 'react'
 import {
   Card,
   Form,
@@ -8,7 +8,7 @@ import {
   notification,
   Button,
 } from 'antd';
-import { Category, getCategories, putCategories } from 'models/Category'
+import { Category, getCategories, putCategory } from 'store/models/Category'
 import { CascaderOptionType } from 'antd/lib/cascader';
 
 type CategoryManagerProps = {
@@ -31,7 +31,7 @@ const CategoryManager: FC<CategoryManagerProps> = () => {
   const [categories, setCategories] = React.useState<Array<Category>>([]);
 
   React.useEffect(() => {
-    getCategories().then((categories) => setCategories(categories))
+    getCategories().then((c) => setCategories(c))
     return function cleanup() {
       console.log("cleanup")
     };
@@ -53,13 +53,18 @@ const CategoryManager: FC<CategoryManagerProps> = () => {
       Name: c.name,
       Code: c.code,
       Depth: parentCategory?.Depth! + 1,
-      Category1ID: parentCategory?.Category1ID,
-      Category2ID: parentCategory?.Category2ID,
-      Category3ID: parentCategory?.Category3ID,
-      Category4ID: parentCategory?.Category4ID,
+      Category1ID: parentCategory?.Category1ID || '',
+      Category2ID: parentCategory?.Category2ID || '',
+      Category3ID: parentCategory?.Category3ID || '',
+      Category4ID: parentCategory?.Category4ID || '',
+      CreatedAt: new Date(),
+      CreatedBy: '',
+      UpdatedAt: new Date(),
+      UpdatedBy: '',
+      DeletedAt: new Date(),
     }
 
-    putCategories(category).then((res) => {
+    putCategory(category).then((res) => {
       openNotification(
         'success',
         '카테고리 등록 성공',
@@ -81,8 +86,6 @@ const CategoryManager: FC<CategoryManagerProps> = () => {
   const onCategorySubmitFailed = (errorInfo: any) => {
     openNotification('error', "카테고리 관리등록 실패", JSON.stringify(errorInfo))
   };
-
-    
   return (
     <Card title="카테고리 관리">
       <Form<CategoryFormData>

@@ -1,7 +1,7 @@
 import { FC, useState, ReactNode } from 'react'
 import Head from 'next/head'
 import styled from 'styled-components'
-import { Session } from 'models/Session'
+import { Session } from 'store/models/Session'
 
 import { Layout, Menu, Breadcrumb } from 'antd';
 import { UserOutlined, InboxOutlined } from '@ant-design/icons'

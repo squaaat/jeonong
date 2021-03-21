@@ -1,4 +1,4 @@
-import { User, MockUser } from 'models/User'
+import { User, MockUser } from 'store/models/User'
 
 export type Session = {
   user: User;
